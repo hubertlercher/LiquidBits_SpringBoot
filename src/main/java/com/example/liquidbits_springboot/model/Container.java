@@ -1,28 +1,70 @@
 package com.example.liquidbits_springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.sql.Date;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-public class Container {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name = "CONTAINER")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Container implements Serializable {
+
+    //region Properties
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CONTAINER_ID")
     private int containerId;
-    @Basic
+
     @Column(name = "TAPPED")
     private Date tapped;
-    @Basic
+
     @Column(name = "SIZE_ML")
     private int sizeMl;
-    @ManyToOne
-    @JoinColumn(name = "DRINK-TYPE_ID", referencedColumnName = "DRINK-TYPE_ID", nullable = false)
-    private DrinkType drinkTypeByDrinkTypeId;
-    @OneToMany(mappedBy = "containerByContainerId")
-    private Collection<Drink> drinksByContainerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DRINKTYPE_ID", referencedColumnName = "DRINKTYPE_ID", nullable = false)
+    private DrinkType drinkType;
+    @JsonIgnore
+    @OneToMany(mappedBy = "container",
+            cascade = CascadeType.MERGE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private Set<Drink> drinks = new HashSet<>();
+    //endregion
+
+    //region Constructor
+
+    public Container() {
+    }
+
+    public Container(int containerId) {
+        this.containerId = containerId;
+    }
+
+    //endregion
+
+
+    //region equals and hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Container container = (Container) o;
+        return containerId == container.containerId && sizeMl == container.sizeMl && Objects.equals(tapped, container.tapped);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(containerId, tapped, sizeMl);
+    }
+    //endregion
+
+    //region Getter and Setter
 
     public int getContainerId() {
         return containerId;
@@ -48,32 +90,46 @@ public class Container {
         this.sizeMl = sizeMl;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Container container = (Container) o;
-        return containerId == container.containerId && sizeMl == container.sizeMl && Objects.equals(tapped, container.tapped);
+    public DrinkType getDrinkType() {
+        return drinkType;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(containerId, tapped, sizeMl);
+    public void setDrinkType(DrinkType drinkType) {
+        this.drinkType = drinkType;
     }
 
-    public DrinkType getDrinkTypeByDrinkTypeId() {
-        return drinkTypeByDrinkTypeId;
+    public Collection<Drink> getDrinks() {
+        return drinks;
     }
 
-    public void setDrinkTypeByDrinkTypeId(DrinkType drinkTypeByDrinkTypeId) {
-        this.drinkTypeByDrinkTypeId = drinkTypeByDrinkTypeId;
+    public void setDrinks(Set<Drink> drinks) {
+        this.drinks = drinks;
     }
 
-    public Collection<Drink> getDrinksByContainerId() {
-        return drinksByContainerId;
-    }
 
-    public void setDrinksByContainerId(Collection<Drink> drinksByContainerId) {
-        this.drinksByContainerId = drinksByContainerId;
-    }
+    //endregion Getter and Setter
+
+    //region Methods
+
+    /*@JsonAnyGetter
+    public Map<String, Object> calcBarrelLevel() {
+        int level = 0;
+        int dispensed;
+
+        dispensed = this.drinks.stream()
+                .mapToInt(drink -> drink.getAmount())
+                .sum();
+
+        level = this.getSizeMl() - dispensed;
+
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("barrelLevel", level);
+
+        return properties;
+
+    }*/
+
+    //endregion Methods
+
+
 }

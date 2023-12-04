@@ -1,25 +1,51 @@
 package com.example.liquidbits_springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
 
 @Entity
-public class User {
+@Table(name = "USER")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "USER_ID")
     private int userId;
-    @Basic
+
     @Column(name = "USERNAME")
     private String username;
-    @Basic
+
     @Column(name = "MAIL")
     private String mail;
-    @OneToMany(mappedBy = "userByUserId")
-    private Collection<Drink> drinksByUserId;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.MERGE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private Set<Drink> drinks = new HashSet<>();
 
+    //region Constructor
+
+    public User() {
+    }
+
+    public User(int userId) {
+        this.userId = userId;
+    }
+
+    //endregion
+
+
+
+    //region Getter and Setter
     public int getUserId() {
         return userId;
     }
@@ -57,11 +83,11 @@ public class User {
         return Objects.hash(userId, username, mail);
     }
 
-    public Collection<Drink> getDrinksByUserId() {
-        return drinksByUserId;
+    public Collection<Drink> getDrinks() {
+        return drinks;
     }
 
-    public void setDrinksByUserId(Collection<Drink> drinksByUserId) {
-        this.drinksByUserId = drinksByUserId;
+    public void setDrinks(Set<Drink> drinks) {
+        this.drinks = drinks;
     }
 }

@@ -1,27 +1,55 @@
 package com.example.liquidbits_springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-public class Device {
+@Table(name = "DEVICE")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Device implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "DEVICE_ID")
     private int deviceId;
-    @Basic
+
     @Column(name = "LOCATION")
     private String location;
-    @Basic
+
     @Column(name = "MANUFACTURER")
     private String manufacturer;
-    @Basic
+
     @Column(name = "MODELL")
     private String modell;
-    @OneToMany(mappedBy = "deviceByDeviceId")
-    private Collection<Drink> drinksByDeviceId;
+    @JsonIgnore
+    @OneToMany(mappedBy = "device",
+            cascade = CascadeType.MERGE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private Set<Drink> drinks = new HashSet<>();
+
+    //region Constructors
+
+    public Device() {
+    }
+
+    public Device(int deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    //endregion
+
+
+
+
+    //region Getter and Setter
+
 
     public int getDeviceId() {
         return deviceId;
@@ -55,6 +83,17 @@ public class Device {
         this.modell = modell;
     }
 
+    public Collection<Drink> getDrinks() {
+        return drinks;
+    }
+
+    public void setDrinks(Set<Drink> drinks) {
+        this.drinks = drinks;
+    }
+
+    //endregion
+
+    //region haschCode equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,11 +107,6 @@ public class Device {
         return Objects.hash(deviceId, location, manufacturer, modell);
     }
 
-    public Collection<Drink> getDrinksByDeviceId() {
-        return drinksByDeviceId;
-    }
-
-    public void setDrinksByDeviceId(Collection<Drink> drinksByDeviceId) {
-        this.drinksByDeviceId = drinksByDeviceId;
-    }
+    //endregion
 }
+

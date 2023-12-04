@@ -1,30 +1,44 @@
 package com.example.liquidbits_springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class Drink {
+@Table(name = "DRINK")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Drink implements Serializable {
+
+    //region Properties
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "DRINK_ID")
     private int drinkId;
-    @Basic
+
     @Column(name = "AMOUNT")
     private Integer amount;
-    @ManyToOne
-    @JoinColumn(name = "DRINK-TYPE_ID", referencedColumnName = "DRINK-TYPE_ID", nullable = false)
-    private DrinkType drinkTypeByDrinkTypeId;
-    @ManyToOne
-    @JoinColumn(name = "CONTAINER_ID", referencedColumnName = "CONTAINER_ID", nullable = false)
-    private Container containerByContainerId;
-    @ManyToOne
-    @JoinColumn(name = "DEVICE_ID", referencedColumnName = "DEVICE_ID", nullable = false)
-    private Device deviceByDeviceId;
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false)
-    private User userByUserId;
+    @JsonIgnoreProperties({"name", "alcvalue", "intensity"})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "DRINKTYPE_ID")
+    private DrinkType drinkType;
+    @JsonIgnoreProperties({"tapped", "sizeMl", "drinkType"})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "CONTAINER_ID")
+    private Container container;
+    @JsonIgnoreProperties({"location", "manufacturer", "modell"})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "DEVICE_ID")
+    private Device device;
+    @JsonIgnoreProperties({"username", "mail"})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
+    //endregion
+
+    //region Getter and Setter
 
     public int getDrinkId() {
         return drinkId;
@@ -42,6 +56,41 @@ public class Drink {
         this.amount = amount;
     }
 
+    public DrinkType getDrinkType() {
+        return drinkType;
+    }
+
+    public void setDrinkType(DrinkType drinkType) {
+        this.drinkType = drinkType;
+    }
+
+    public Container getContainer() {
+        return container;
+    }
+
+    public void setContainer(Container containerId) {
+        this.container = container;
+    }
+
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    //endregion
+
+    //region haschCode and equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,36 +103,12 @@ public class Drink {
     public int hashCode() {
         return Objects.hash(drinkId, amount);
     }
+    //endregion
 
-    public DrinkType getDrinkTypeByDrinkTypeId() {
-        return drinkTypeByDrinkTypeId;
-    }
+    //region Methods
 
-    public void setDrinkTypeByDrinkTypeId(DrinkType drinkTypeByDrinkTypeId) {
-        this.drinkTypeByDrinkTypeId = drinkTypeByDrinkTypeId;
-    }
 
-    public Container getContainerByContainerId() {
-        return containerByContainerId;
-    }
 
-    public void setContainerByContainerId(Container containerByContainerId) {
-        this.containerByContainerId = containerByContainerId;
-    }
 
-    public Device getDeviceByDeviceId() {
-        return deviceByDeviceId;
-    }
-
-    public void setDeviceByDeviceId(Device deviceByDeviceId) {
-        this.deviceByDeviceId = deviceByDeviceId;
-    }
-
-    public User getUserByUserId() {
-        return userByUserId;
-    }
-
-    public void setUserByUserId(User userByUserId) {
-        this.userByUserId = userByUserId;
-    }
+    //endregion
 }

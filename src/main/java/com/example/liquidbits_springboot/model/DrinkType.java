@@ -1,30 +1,59 @@
 package com.example.liquidbits_springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "DRINK-TYPE", schema = "liquidbits", catalog = "")
-public class DrinkType {
+@Table(name = "DRINKTYPE")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class DrinkType implements Serializable {
 
+    //region Properties
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "DRINK-TYPE_ID")
+    @Column(name = "DRINKTYPE_ID")
     private int drinkTypeId;
 
-    @Basic
     @Column(name = "NAME")
     private String name;
-    @Basic
+
     @Column(name = "ALCVALUE")
     private Integer alcvalue;
-    @OneToMany(mappedBy = "drinkTypeByDrinkTypeId")
-    private Collection<Container> containersByDrinkTypeId;
-    @OneToMany(mappedBy = "drinkTypeByDrinkTypeId")
-    private Collection<Drink> drinksByDrinkTypeId;
 
+    @Column(name = "INTENSITY")
+    private Integer intensity;
+    @JsonIgnore
+    @OneToMany(mappedBy = "drinkType",
+            cascade = CascadeType.MERGE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private Collection<Container> containers;
+    @JsonIgnore
+    @OneToMany(mappedBy = "drinkType",
+            cascade = CascadeType.MERGE,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private Collection<Drink> drinks;
+    //endregion
+
+    //region Constructor
+
+    public DrinkType() {
+
+    }
+
+    public DrinkType(int drinkTypeId) {
+        this.drinkTypeId = drinkTypeId;
+    }
+
+    //endregion Constructor
+
+    //region Getter and Setter
     public String getName() {
         return name;
     }
@@ -41,6 +70,41 @@ public class DrinkType {
         this.alcvalue = alcvalue;
     }
 
+    public Collection<Container> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(Collection<Container> containers) {
+        this.containers = containers;
+    }
+
+    public Collection<Drink> getDrinks() {
+        return drinks;
+    }
+
+    public void setDrinks(Collection<Drink> drinks) {
+        this.drinks = drinks;
+    }
+
+    public int getDrinkTypeId() {
+        return drinkTypeId;
+    }
+
+    public void setDrinkTypeId(int drinkTypeId) {
+        this.drinkTypeId = drinkTypeId;
+    }
+
+    public Integer getIntensity() {
+        return intensity;
+    }
+
+    public void setIntensity(Integer intensity) {
+        this.intensity = intensity;
+    }
+
+    //endregion
+
+    //region hashCode and equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,20 +117,5 @@ public class DrinkType {
     public int hashCode() {
         return Objects.hash(name, alcvalue);
     }
-
-    public Collection<Container> getContainersByDrinkTypeId() {
-        return containersByDrinkTypeId;
-    }
-
-    public void setContainersByDrinkTypeId(Collection<Container> containersByDrinkTypeId) {
-        this.containersByDrinkTypeId = containersByDrinkTypeId;
-    }
-
-    public Collection<Drink> getDrinksByDrinkTypeId() {
-        return drinksByDrinkTypeId;
-    }
-
-    public void setDrinksByDrinkTypeId(Collection<Drink> drinksByDrinkTypeId) {
-        this.drinksByDrinkTypeId = drinksByDrinkTypeId;
-    }
+    //endregion
 }
