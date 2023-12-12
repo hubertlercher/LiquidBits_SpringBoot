@@ -1,11 +1,14 @@
 package com.example.liquidbits_springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Objects;
 
 @Entity
@@ -18,13 +21,13 @@ public class DrinkType implements Serializable {
     @Id
     @Column(name = "DRINKTYPE_ID")
     private int drinkTypeId;
-
+    @JsonIgnore
     @Column(name = "NAME")
     private String name;
-
+    @JsonIgnore
     @Column(name = "ALCVALUE")
     private Integer alcvalue;
-
+    @JsonIgnore
     @Column(name = "INTENSITY")
     private Integer intensity;
     @JsonIgnore
@@ -39,6 +42,14 @@ public class DrinkType implements Serializable {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private Collection<Drink> drinks;
+
+    @JsonIgnore
+    @Column(name = "DRINKSIZE_S")
+    private int drinkSizeS;
+
+    @JsonIgnore
+    @Column(name = "DRINKSIZE_L")
+    private int drinkSizeL;
     //endregion
 
     //region Constructor
@@ -101,8 +112,8 @@ public class DrinkType implements Serializable {
     public void setIntensity(Integer intensity) {
         this.intensity = intensity;
     }
-
     //endregion
+
 
     //region hashCode and equals
     @Override
@@ -118,4 +129,37 @@ public class DrinkType implements Serializable {
         return Objects.hash(name, alcvalue);
     }
     //endregion
+
+    //region Methods
+
+    @JsonAnyGetter
+    public java.util.Map<String, Object> Stats() {
+
+        int dailyDispensed = this.getDrinks().stream()
+                .filter(drink -> drink.getTimestamp().equals(LocalDate.now()))
+                .mapToInt(d -> d.getAmount())
+                .sum();
+
+        int monthlyDispensed = this.getDrinks().stream()
+                .filter(drink -> drink.getTimestamp().getMonth() == LocalDate.now().getMonthValue())
+                .mapToInt(d -> d.getAmount())
+                .sum();
+
+        int yearlyDispensed = this.getDrinks().stream()
+                .filter(drink -> drink.getTimestamp().getYear() == LocalDate.now().getYear())
+                .mapToInt(d -> d.getAmount())
+                .sum();
+
+        java.util.Map<String, Object> properties = new HashMap<>();
+        properties.put("today", dailyDispensed);
+        properties.put("monthly", monthlyDispensed);
+        properties.put("yearly", yearlyDispensed);
+
+        return properties;
+    }
+
+    //endregion Methods
+
+
+
 }

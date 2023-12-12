@@ -1,15 +1,29 @@
 package com.example.liquidbits_springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.hibernate.mapping.Map;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "DRINK")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Drink implements Serializable {
+
+    //region static properties
+
+    //endregion
 
     //region Properties
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,22 +33,24 @@ public class Drink implements Serializable {
 
     @Column(name = "AMOUNT")
     private Integer amount;
-    @JsonIgnoreProperties({"name", "alcvalue", "intensity"})
+    @JsonProperty("drinkType")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "DRINKTYPE_ID")
     private DrinkType drinkType;
-    @JsonIgnoreProperties({"tapped", "sizeMl", "drinkType"})
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonProperty("container")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CONTAINER_ID")
     private Container container;
-    @JsonIgnoreProperties({"location", "manufacturer", "modell"})
+    @JsonProperty("device")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "DEVICE_ID")
     private Device device;
-    @JsonIgnoreProperties({"username", "mail"})
+    @JsonProperty("user")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID")
     private User user;
+    @Column(name = "TIMESTAMP")
+    private Timestamp timestamp;
 
     //endregion
 
@@ -88,6 +104,14 @@ public class Drink implements Serializable {
         this.user = user;
     }
 
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
     //endregion
 
     //region haschCode and equals
@@ -107,8 +131,31 @@ public class Drink implements Serializable {
 
     //region Methods
 
+    @JsonAnyGetter
+    public java.util.Map<String, Object> Stats() {
+
+        int dailyDispensed = this.getDrinkType().getDrinks().stream()
+                .filter(drink -> drink.getTimestamp().equals(LocalDate.now()))
+                .mapToInt(d -> d.getAmount())
+                .sum();
+
+        int monthlyDispensed = this.getDrinkType().getDrinks().stream()
+                .filter(drink -> drink.getTimestamp().getMonth() == LocalDate.now().getMonthValue())
+                .mapToInt(d -> d.getAmount())
+                .sum();
+
+        int yearlyDispensed = this.getDrinkType().getDrinks().stream()
+                .filter(drink -> drink.getTimestamp().getYear() == LocalDate.now().getYear())
+                .mapToInt(d -> d.getAmount())
+                .sum();
+
+        java.util.Map<String, Object> properties = new HashMap<>();
+        properties.put("today", dailyDispensed);
+        properties.put("monthly", monthlyDispensed);
+        properties.put("yearly", yearlyDispensed);
 
 
-
+        return properties;
+    }
     //endregion
 }

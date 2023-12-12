@@ -18,13 +18,13 @@ public class Device implements Serializable {
     @Id
     @Column(name = "DEVICE_ID")
     private int deviceId;
-
+    @JsonIgnore
     @Column(name = "LOCATION")
     private String location;
-
+    @JsonIgnore
     @Column(name = "MANUFACTURER")
     private String manufacturer;
-
+    @JsonIgnore
     @Column(name = "MODELL")
     private String modell;
     @JsonIgnore

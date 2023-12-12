@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -21,20 +22,30 @@ public class Container implements Serializable {
     @Column(name = "CONTAINER_ID")
     private int containerId;
 
+    @JsonIgnore
     @Column(name = "TAPPED")
     private Date tapped;
 
+    @JsonIgnore
     @Column(name = "SIZE_ML")
     private int sizeMl;
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DRINKTYPE_ID", referencedColumnName = "DRINKTYPE_ID", nullable = false)
     private DrinkType drinkType;
+
     @JsonIgnore
     @OneToMany(mappedBy = "container",
             cascade = CascadeType.MERGE,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private Set<Drink> drinks = new HashSet<>();
+
+    @JsonIgnore
+    @Column(name = "UNTAPPED")
+    private LocalDateTime untapped;
+
     //endregion
 
     //region Constructor
@@ -106,28 +117,35 @@ public class Container implements Serializable {
         this.drinks = drinks;
     }
 
+    public LocalDateTime getUntapped() {
+        return untapped;
+    }
+
+    public void setUntapped(LocalDateTime untapped) {
+        this.untapped = untapped;
+    }
 
     //endregion Getter and Setter
 
     //region Methods
 
-    /*@JsonAnyGetter
-    public Map<String, Object> calcBarrelLevel() {
+    @JsonAnyGetter
+    public static int calcBarrelLevel(Container container) {
         int level = 0;
         int dispensed;
 
-        dispensed = this.drinks.stream()
+        dispensed = container.getDrinks().stream()
                 .mapToInt(drink -> drink.getAmount())
                 .sum();
 
-        level = this.getSizeMl() - dispensed;
+        level = container.getSizeMl() - dispensed;
 
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("barrelLevel", level);
+        // toDo Prozent
+        int percent = level / (container.getSizeMl() / 100);
 
-        return properties;
+        return percent;
 
-    }*/
+    }
 
     //endregion Methods
 

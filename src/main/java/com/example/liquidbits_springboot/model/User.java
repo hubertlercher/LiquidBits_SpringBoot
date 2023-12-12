@@ -19,10 +19,10 @@ public class User implements Serializable {
     @Id
     @Column(name = "USER_ID")
     private int userId;
-
+    @JsonIgnore
     @Column(name = "USERNAME")
     private String username;
-
+    @JsonIgnore
     @Column(name = "MAIL")
     private String mail;
     @JsonIgnore

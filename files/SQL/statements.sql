@@ -36,3 +36,7 @@ VALUES(300,1,1,1,1);
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id)
 VALUES (250, 2,2,1,2);
 
+INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id)
+VALUES (250, 2,2,1,2);
+
+
