@@ -1,9 +1,11 @@
 package com.example.liquidbits_springboot.dto;
 
+import com.example.liquidbits_springboot.model.Container;
+
 public class ContainerStatisticsDTO {
 
     private String name;
-    private String status = "ok";
+    private String status;
     private int barrelLevel;
     private int drinkSizeL;
     private int drinkSizeS;

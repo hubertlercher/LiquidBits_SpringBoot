@@ -1,5 +1,6 @@
 package com.example.liquidbits_springboot.model;
 
+import com.example.liquidbits_springboot.dto.ContainerStatisticsDTO;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -46,6 +47,9 @@ public class Container implements Serializable {
     @Column(name = "UNTAPPED")
     private LocalDateTime untapped;
 
+    @JsonIgnore
+    @Column(name = "STATUS")
+    private String status;
     //endregion
 
     //region Constructor
@@ -125,11 +129,19 @@ public class Container implements Serializable {
         this.untapped = untapped;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     //endregion Getter and Setter
 
     //region Methods
 
-    @JsonAnyGetter
+
     public static int calcBarrelLevel(Container container) {
         int level = 0;
         int dispensed;
@@ -146,6 +158,12 @@ public class Container implements Serializable {
         return percent;
 
     }
+
+    public static String setStatusInDTO(Container container) {
+        return container.status;
+    }
+
+
 
     //endregion Methods
 

@@ -51,13 +51,14 @@ public class StatisticsRestController {
 
             csDTO.setName(container.getDrinkType().getName());
             csDTO.setBarrelLevel(Container.calcBarrelLevel(container));
+            csDTO.setStatus(Container.setStatusInDTO(container));
 
             // ... Daten auswerten
             // ... all drinks from container
             for (Drink drink : container.getDrinks()) {
 
                 //täglich
-                // Gruppierung der Drinks nach Stunden und Summierung der Mengen
+                //Gruppierung der Drinks nach Stunden und Summierung der Mengen
                 Map<Integer, Integer> amountsByHour = container.getDrinks().stream()
                         .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.now().getDayOfMonth())
                         .collect(Collectors.groupingBy(
@@ -69,6 +70,7 @@ public class StatisticsRestController {
                 for (int i = 0; i < 24; i++) {
                     amountsForDay.add(amountsByHour.getOrDefault(i, 0));
                 }
+
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setDaily(amountsForDay);
 
@@ -100,10 +102,9 @@ public class StatisticsRestController {
                 for (int i = 0; i < 12; i++) {
                     amountsForYear.add(amountsByMonth.getOrDefault(i, 0));
                 }
+
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setAnnually(amountsForYear);
-
-
 
 
             }
