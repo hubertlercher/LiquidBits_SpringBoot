@@ -112,6 +112,23 @@ public class DrinkType implements Serializable {
     public void setIntensity(Integer intensity) {
         this.intensity = intensity;
     }
+
+    public int getDrinkSizeS() {
+        return drinkSizeS;
+    }
+
+    public void setDrinkSizeS(int drinkSizeS) {
+        this.drinkSizeS = drinkSizeS;
+    }
+
+    public int getDrinkSizeL() {
+        return drinkSizeL;
+    }
+
+    public void setDrinkSizeL(int drinkSizeL) {
+        this.drinkSizeL = drinkSizeL;
+    }
+
     //endregion
 
 

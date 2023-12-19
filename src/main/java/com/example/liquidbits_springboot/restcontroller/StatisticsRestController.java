@@ -1,23 +1,29 @@
 package com.example.liquidbits_springboot.restcontroller;
 
+import com.example.liquidbits_springboot.api.ErrorsUtils;
 import com.example.liquidbits_springboot.api.LogUtils;
 import com.example.liquidbits_springboot.dto.ContainerStatisticsDTO;
 import com.example.liquidbits_springboot.dto.StatisticsDTO;
 import com.example.liquidbits_springboot.dto.TimeStatisticsDTO;
 import com.example.liquidbits_springboot.model.Container;
 import com.example.liquidbits_springboot.model.Drink;
+import com.example.liquidbits_springboot.model.DrinkType;
 import com.example.liquidbits_springboot.repository.ContainerRepository;
 import com.example.liquidbits_springboot.repository.DrinkRepository;
+import com.example.liquidbits_springboot.repository.DrinkTypeRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RestController
 @CrossOrigin(origins = "http://10.66.189.77")
@@ -34,6 +40,9 @@ public class StatisticsRestController {
 
     @Autowired
     ContainerRepository containerRepository;
+
+    @Autowired
+    DrinkTypeRepository drinkTypeRepository;
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "")
@@ -148,4 +157,61 @@ public class StatisticsRestController {
         return stats;
 
     }
+
+    @PutMapping(value = "")
+    public StatisticsDTO update(@Valid @RequestBody
+                                StatisticsDTO statisticsDTO, BindingResult bindingResult) {
+
+        logger.info(LogUtils.info(className, "update", String.format("(%s)", statisticsDTO)));
+
+        boolean error = false;
+        String errorMessage = "";
+
+        if (!error) {
+            error = bindingResult.hasErrors();
+            errorMessage = bindingResult.toString();
+        }
+
+        if (!error) {
+            try {
+
+                int[] drinkSizesS = statisticsDTO.getDrinkStatisticsBarrel()
+                        .stream()
+                        .flatMapToInt(containerStatisticsDTO -> IntStream.of(containerStatisticsDTO.getDrinkSizeS()))
+                        .toArray();
+
+                for (int i = 0; i < drinkSizesS.length; i++) {
+                    drinkTypeRepository.updateDrinkSizeSById(i+1, drinkSizesS[i]);
+                }
+
+
+                int[] drinkSizesL = statisticsDTO.getDrinkStatisticsBarrel()
+                        .stream()
+                        .flatMapToInt(containerStatisticsDTO -> IntStream.of(containerStatisticsDTO.getDrinkSizeL()))
+                        .toArray();
+
+                for (int i = 0; i < drinkSizesL.length; i++) {
+                    drinkTypeRepository.updateDrinkSizeLById(i+1, drinkSizesL[i]);
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                error = true;
+                errorMessage = ErrorsUtils.getErrorMessage(e);
+            }
+        }
+
+        ResponseEntity<?> result;
+        if (!error) {
+            result = new ResponseEntity<StatisticsDTO>(statisticsDTO, HttpStatus.OK);
+        } else {
+            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+
+        return statisticsDTO;
+    }
+
 }
