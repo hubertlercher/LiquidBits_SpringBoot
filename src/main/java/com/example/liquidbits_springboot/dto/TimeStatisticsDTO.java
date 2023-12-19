@@ -7,6 +7,7 @@ import java.util.List;
 
 public class TimeStatisticsDTO {
 
+    private String name;
     private LocalDate date = LocalDate.now();
     private List<Integer> daily;
     private List<Integer> monthly;
@@ -47,4 +48,12 @@ public class TimeStatisticsDTO {
     }
     //endregion
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

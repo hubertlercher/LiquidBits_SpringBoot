@@ -52,6 +52,7 @@ public class StatisticsRestController {
             csDTO.setName(container.getDrinkType().getName());
             csDTO.setBarrelLevel(Container.calcBarrelLevel(container));
             csDTO.setStatus(Container.setStatusInDTO(container));
+            tsDTO.setName(container.getDrinkType().getName());
 
             // ... Daten auswerten
             // ... all drinks from container
