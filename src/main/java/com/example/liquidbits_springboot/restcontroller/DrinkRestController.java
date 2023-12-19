@@ -46,7 +46,7 @@ public class DrinkRestController {
     }
 
 
-    @PutMapping(value = "")
+    @PostMapping(value = "")
     public ResponseEntity<?> add(@Valid @RequestBody Drink drink, BindingResult bindingResult) {
         logger.info(LogUtils.info(className, "add", String.format("(%s)",drink)));
 

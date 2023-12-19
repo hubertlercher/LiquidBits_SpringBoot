@@ -131,31 +131,5 @@ public class Drink implements Serializable {
 
     //region Methods
 
-    @JsonAnyGetter
-    public java.util.Map<String, Object> Stats() {
-
-        int dailyDispensed = this.getDrinkType().getDrinks().stream()
-                .filter(drink -> drink.getTimestamp().equals(LocalDate.now()))
-                .mapToInt(d -> d.getAmount())
-                .sum();
-
-        int monthlyDispensed = this.getDrinkType().getDrinks().stream()
-                .filter(drink -> drink.getTimestamp().getMonth() == LocalDate.now().getMonthValue())
-                .mapToInt(d -> d.getAmount())
-                .sum();
-
-        int yearlyDispensed = this.getDrinkType().getDrinks().stream()
-                .filter(drink -> drink.getTimestamp().getYear() == LocalDate.now().getYear())
-                .mapToInt(d -> d.getAmount())
-                .sum();
-
-        java.util.Map<String, Object> properties = new HashMap<>();
-        properties.put("today", dailyDispensed);
-        properties.put("monthly", monthlyDispensed);
-        properties.put("yearly", yearlyDispensed);
-
-
-        return properties;
-    }
     //endregion
 }
