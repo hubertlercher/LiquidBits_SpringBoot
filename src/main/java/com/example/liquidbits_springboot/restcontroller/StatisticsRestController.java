@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @RestController
-@CrossOrigin(origins = "http://10.66.189.77")
 @RequestMapping("stats")
 public class StatisticsRestController {
 
@@ -44,7 +43,6 @@ public class StatisticsRestController {
     @Autowired
     DrinkTypeRepository drinkTypeRepository;
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "")
     public StatisticsDTO getStats() {
         logger.info(LogUtils.info(className, "getStats"));
