@@ -18,13 +18,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("stats")
 public class StatisticsRestController {
@@ -208,9 +208,8 @@ public class StatisticsRestController {
             result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-
-
         return statisticsDTO;
+
     }
 
 }
