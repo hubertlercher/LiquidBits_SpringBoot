@@ -50,6 +50,10 @@ public class DrinkType implements Serializable {
     @JsonIgnore
     @Column(name = "DRINKSIZE_L")
     private int drinkSizeL;
+
+    @JsonIgnore
+    @Column(name = "LAST_MAINTENANCE")
+    private LocalDate lastMaintenance;
     //endregion
 
     //region Constructor
@@ -127,6 +131,14 @@ public class DrinkType implements Serializable {
 
     public void setDrinkSizeL(int drinkSizeL) {
         this.drinkSizeL = drinkSizeL;
+    }
+
+    public LocalDate getLastMaintenance() {
+        return lastMaintenance;
+    }
+
+    public void setLastMaintenance(LocalDate lastMaintenance) {
+        this.lastMaintenance = lastMaintenance;
     }
 
     //endregion

@@ -58,6 +58,10 @@ public class StatisticsRestController {
 
             csDTO.setName(container.getDrinkType().getName());
             csDTO.setBarrelLevel(Container.calcBarrelLevel(container));
+            csDTO.setLastMaintenance(container.getDrinkType().getLastMaintenance());
+            csDTO.setNextMaintenance(csDTO.getLastMaintenance().plusMonths(6));
+            csDTO.setDrinkSizeS(container.getDrinkType().getDrinkSizeS());
+            csDTO.setDrinkSizeL(container.getDrinkType().getDrinkSizeL());
             csDTO.setStatus(Container.setStatusInDTO(container));
             tsDTO.setName(container.getDrinkType().getName());
 

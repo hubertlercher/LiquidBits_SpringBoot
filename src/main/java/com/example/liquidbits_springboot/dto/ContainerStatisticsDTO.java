@@ -1,6 +1,9 @@
 package com.example.liquidbits_springboot.dto;
 
 import com.example.liquidbits_springboot.model.Container;
+import jakarta.persistence.JoinColumn;
+
+import java.time.LocalDate;
 
 public class ContainerStatisticsDTO {
 
@@ -9,6 +12,8 @@ public class ContainerStatisticsDTO {
     private int barrelLevel;
     private int drinkSizeL;
     private int drinkSizeS;
+    private LocalDate lastMaintenance;
+    private LocalDate nextMaintenance;
 
     public String getName() {
         return name;
@@ -49,4 +54,21 @@ public class ContainerStatisticsDTO {
     public void setDrinkSizeS(int drinkSizeS) {
         this.drinkSizeS = drinkSizeS;
     }
+
+    public LocalDate getLastMaintenance() {
+        return lastMaintenance;
+    }
+
+    public void setLastMaintenance(LocalDate lastMaintenance) {
+        this.lastMaintenance = lastMaintenance;
+    }
+
+    public LocalDate getNextMaintenance() {
+        return nextMaintenance;
+    }
+
+    public void setNextMaintenance(LocalDate nextMaintenance) {
+        this.nextMaintenance = nextMaintenance;
+    }
 }
+
