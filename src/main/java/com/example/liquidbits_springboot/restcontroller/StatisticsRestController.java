@@ -68,7 +68,7 @@ public class StatisticsRestController {
                 //täglich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
                 Map<Integer, Integer> amountsByHour = container.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.now().getDayOfMonth())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2023, 12, 19).getDayOfMonth())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getHours(),
                                 Collectors.summingInt(Drink::getAmount)
@@ -85,7 +85,7 @@ public class StatisticsRestController {
                 //monatlich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
                 Map<Integer, Integer> amountsByDay = container.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.now().getMonthValue())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2023, 12, 19).getMonthValue())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getDay(),
                                 Collectors.summingInt(Drink::getAmount)
@@ -100,7 +100,7 @@ public class StatisticsRestController {
 
                 //jährlich
                 Map<Integer, Integer> amountsByMonth = container.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.now().getYear())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2023, 12, 19).getYear())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getMonth(),
                                 Collectors.summingInt(Drink::getAmount)

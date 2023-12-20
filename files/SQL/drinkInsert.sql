@@ -1,7 +1,6 @@
 USE liquidbits;
 
 
-
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
 VALUES (125, 2,2,1,2, '2023-12-19 14:15:00');
 
@@ -229,6 +228,7 @@ VALUES(300,3,3,1,1, '2023-12-19 21:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
 VALUES(500,1,1,1,1, '2023-12-19 22:15:00');
+
 
 
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.mapping.Map;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -33,18 +34,22 @@ public class Drink implements Serializable {
 
     @Column(name = "AMOUNT")
     private Integer amount;
+    @NotNull
     @JsonProperty("drinkType")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "DRINKTYPE_ID")
     private DrinkType drinkType;
+    @NotNull
     @JsonProperty("container")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CONTAINER_ID")
     private Container container;
+    @NotNull
     @JsonProperty("device")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "DEVICE_ID")
     private Device device;
+    @NotNull
     @JsonProperty("user")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID")
