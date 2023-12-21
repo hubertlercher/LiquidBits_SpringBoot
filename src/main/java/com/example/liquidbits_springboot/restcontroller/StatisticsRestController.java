@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.swing.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
@@ -218,8 +220,8 @@ public class StatisticsRestController {
 
 
 
-    @PutMapping(value = "/drinkStatisticsBarell/beer")
-    public ResponseEntity updateDrinkStatisticsBarrel(@Valid @RequestBody @PathVariable
+    @PutMapping(value = "/drinkStatisticsBarell/{drinkTypeId}")
+    public ResponseEntity updateDrinkStatisticsBarrel(@Valid @RequestBody @PathVariable Integer drinkTypeId,
                                 ContainerStatisticsDTO containerStatisticsDTO, BindingResult bindingResult) {
 
         logger.info(LogUtils.info(className, "update", String.format("(%s)", containerStatisticsDTO)));
@@ -236,10 +238,10 @@ public class StatisticsRestController {
             try {
 
                 int drinkSizeS = containerStatisticsDTO.getDrinkSizeS();
-                drinkTypeRepository.updateDrinkSizeSById(1, drinkSizeS);
+                drinkTypeRepository.updateDrinkSizeSById(drinkTypeId, drinkSizeS);
 
                 int drinkSizeL = containerStatisticsDTO.getDrinkSizeL();
-                drinkTypeRepository.updateDrinkSizeSById(1, drinkSizeL);
+                drinkTypeRepository.updateDrinkSizeSById(drinkTypeId, drinkSizeL);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -258,6 +260,7 @@ public class StatisticsRestController {
         return result;
 
     }
+
 
 
 
