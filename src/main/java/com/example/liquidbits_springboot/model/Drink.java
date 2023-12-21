@@ -41,7 +41,7 @@ public class Drink implements Serializable {
     private DrinkType drinkType;
     @NotNull
     @JsonProperty("container")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CONTAINER_ID")
     private Container container;
     @NotNull
@@ -54,6 +54,7 @@ public class Drink implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID")
     private User user;
+    @NotNull
     @Column(name = "TIMESTAMP")
     private Timestamp timestamp;
 
@@ -89,7 +90,7 @@ public class Drink implements Serializable {
         return container;
     }
 
-    public void setContainer(Container containerId) {
+    public void setContainer(Container container) {
         this.container = container;
     }
 
@@ -135,6 +136,19 @@ public class Drink implements Serializable {
     //endregion
 
     //region Methods
+
+    @Override
+    public String toString() {
+        return "Drink{" +
+                "drinkId=" + drinkId +
+                ", amount=" + amount +
+                ", drinkType=" + drinkType +
+                ", container=" + container +
+                ", device=" + device +
+                ", user=" + user +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 
     //endregion
 }

@@ -35,7 +35,7 @@ public class DrinkRestController {
         Optional<Drink> optDrink = drinkRepository.findById(drinkId);
         if (optDrink.isPresent()){
             Drink drink = optDrink.get();
-            //    addLinks(teacher);
+
             result = new ResponseEntity<Drink>(drink, HttpStatus.OK);
         }
         else {
@@ -46,7 +46,7 @@ public class DrinkRestController {
     }
 
 
-    @PostMapping(value = "")
+    @PutMapping(value = "")
     public ResponseEntity<?> add(@Valid @RequestBody Drink drink, BindingResult bindingResult) {
         logger.info(LogUtils.info(className, "add", String.format("(%s)",drink)));
 

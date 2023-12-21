@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@CrossOrigin("http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("stats")
 public class StatisticsRestController {
@@ -91,7 +91,7 @@ public class StatisticsRestController {
                 Map<Integer, Integer> amountsByDay = container.getDrinks().stream()
                         .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2023, 12, 19).getMonthValue())
                         .collect(Collectors.groupingBy(
-                                d -> d.getTimestamp().getDay(),
+                                d -> d.getTimestamp().toLocalDateTime().getDayOfMonth(),
                                 Collectors.summingInt(Drink::getAmount)
                         ));
                 // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
@@ -162,8 +162,8 @@ public class StatisticsRestController {
     }
 
     @PutMapping(value = "")
-    public StatisticsDTO update(@Valid @RequestBody
-                                StatisticsDTO statisticsDTO, BindingResult bindingResult) {
+    public ResponseEntity update(@Valid @RequestBody
+                                 StatisticsDTO statisticsDTO, BindingResult bindingResult) {
 
         logger.info(LogUtils.info(className, "update", String.format("(%s)", statisticsDTO)));
 
@@ -212,8 +212,56 @@ public class StatisticsRestController {
             result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return statisticsDTO;
+        return result;
 
     }
+
+
+
+    @PutMapping(value = "/drinkStatisticsBarell/beer")
+    public ResponseEntity updateDrinkStatisticsBarrel(@Valid @RequestBody @PathVariable
+                                ContainerStatisticsDTO containerStatisticsDTO, BindingResult bindingResult) {
+
+        logger.info(LogUtils.info(className, "update", String.format("(%s)", containerStatisticsDTO)));
+
+        boolean error = false;
+        String errorMessage = "";
+
+        if (!error) {
+            error = bindingResult.hasErrors();
+            errorMessage = bindingResult.toString();
+        }
+
+        if (!error) {
+            try {
+
+                int drinkSizeS = containerStatisticsDTO.getDrinkSizeS();
+                drinkTypeRepository.updateDrinkSizeSById(1, drinkSizeS);
+
+                int drinkSizeL = containerStatisticsDTO.getDrinkSizeL();
+                drinkTypeRepository.updateDrinkSizeSById(1, drinkSizeL);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                error = true;
+                errorMessage = ErrorsUtils.getErrorMessage(e);
+            }
+        }
+
+        ResponseEntity<?> result;
+        if (!error) {
+            result = new ResponseEntity<ContainerStatisticsDTO>(containerStatisticsDTO, HttpStatus.OK);
+        } else {
+            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return result;
+
+    }
+
+
+
+
+
 
 }

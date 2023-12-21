@@ -14,19 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface DrinkTypeRepository extends JpaRepository<DrinkType, Integer> {
 
-    /*@PersistenceContext
-    EntityManager entityManager;
-
-    @Transactional
-    public default void updatePersonName(int drinkTypeId, int drinkSizeS) {
-        DrinkType drinkType = entityManager.find(DrinkType.class, drinkTypeId);
-        if (drinkType != null) {
-            drinkType.setDrinkSizeS(drinkSizeS);
-            entityManager.merge(drinkType);
-        }
-    }*/
-
-
     @Transactional
     @Modifying
     @Query("UPDATE DrinkType d SET d.drinkSizeS = :newDrinkSizeS WHERE d.drinkTypeId = :drinkTypeId")
