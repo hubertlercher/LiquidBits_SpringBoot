@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 public class ContainerStatisticsDTO {
 
+    private int drinkTypeId;
     private String name;
     private String status;
     private int barrelLevel;
@@ -69,6 +70,14 @@ public class ContainerStatisticsDTO {
 
     public void setNextMaintenance(LocalDate nextMaintenance) {
         this.nextMaintenance = nextMaintenance;
+    }
+
+    public int getDrinkTypeId() {
+        return drinkTypeId;
+    }
+
+    public void setDrinkTypeId(int drinkTypeId) {
+        this.drinkTypeId = drinkTypeId;
     }
 }
 

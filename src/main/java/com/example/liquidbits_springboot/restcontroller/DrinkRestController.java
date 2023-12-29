@@ -76,6 +76,7 @@ public class DrinkRestController {
             result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+
         return result;
     }
 

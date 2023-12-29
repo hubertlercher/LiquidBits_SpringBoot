@@ -58,6 +58,7 @@ public class StatisticsRestController {
             ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
             TimeStatisticsDTO tsDTO = new TimeStatisticsDTO();
 
+            csDTO.setDrinkTypeId(container.getDrinkType().getDrinkTypeId());
             csDTO.setName(container.getDrinkType().getName());
             csDTO.setBarrelLevel(Container.calcBarrelLevel(container));
             csDTO.setLastMaintenance(container.getDrinkType().getLastMaintenance());
@@ -153,33 +154,14 @@ public class StatisticsRestController {
     }
 
 
-    @PutMapping(value = "/drinkStatisticsBarrel/{drinkTypeId}/{drinkSizeS}/{drinkSizeL}")
-    public ContainerStatisticsDTO updateDrinkSizes(@PathVariable int drinkTypeId, @PathVariable int drinkSizeS, @PathVariable int drinkSizeL) {
-        logger.info(LogUtils.info(className, "getDrinkStatisticsBarrel"));
+    @PutMapping(value = "/drinkStatisticsBarrel/{drinkTypeName}/{drinkSizeS}/{drinkSizeL}")
+    public void updateDrinkSizes(@PathVariable String drinkTypeName, @PathVariable int drinkSizeS, @PathVariable int drinkSizeL) {
+        logger.info(LogUtils.info(className, "updateDrinkSizes"));
         ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
 
-        drinkTypeRepository.updateDrinkSizeSById(drinkTypeId, drinkSizeS);
-        drinkTypeRepository.updateDrinkSizeLById(drinkTypeId, drinkSizeL);
+        drinkTypeRepository.updateDrinkSizeSByName(drinkTypeName, drinkSizeS);
+        drinkTypeRepository.updateDrinkSizeLByName(drinkTypeName, drinkSizeL);
 
-        Optional<Container> optionalContainer = containerRepository.findById(drinkTypeId);
-
-        Container container = null;
-
-        if(optionalContainer.isPresent()) {
-            container = optionalContainer.get();
-        }
-
-
-        csDTO.setName(container.getDrinkType().getName());
-        csDTO.setBarrelLevel(Container.calcBarrelLevel(container));
-        csDTO.setLastMaintenance(container.getDrinkType().getLastMaintenance());
-        csDTO.setNextMaintenance(csDTO.getLastMaintenance().plusMonths(6));
-        csDTO.setDrinkSizeS(container.getDrinkType().getDrinkSizeS());
-        csDTO.setDrinkSizeL(container.getDrinkType().getDrinkSizeL());
-        csDTO.setStatus(Container.setStatusInDTO(container));
-
-
-        return csDTO;
     }
 
 
