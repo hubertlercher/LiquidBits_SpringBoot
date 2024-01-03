@@ -15,6 +15,7 @@ public class ContainerStatisticsDTO {
     private int drinkSizeS;
     private LocalDate lastMaintenance;
     private LocalDate nextMaintenance;
+    private int intensity;
 
     public String getName() {
         return name;
@@ -78,6 +79,14 @@ public class ContainerStatisticsDTO {
 
     public void setDrinkTypeId(int drinkTypeId) {
         this.drinkTypeId = drinkTypeId;
+    }
+
+    public int getIntensity() {
+        return intensity;
+    }
+
+    public void setIntensity(int intensity) {
+        this.intensity = intensity;
     }
 }
 

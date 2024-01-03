@@ -24,6 +24,11 @@ public interface DrinkTypeRepository extends JpaRepository<DrinkType, Integer> {
     @Query("UPDATE DrinkType d SET d.drinkSizeL = :newDrinkSizeL WHERE d.name = :drinkTypeName")
     void updateDrinkSizeLByName(String drinkTypeName, int newDrinkSizeL);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE DrinkType d SET d.intensity = :newIntensity WHERE d.name = :drinkTypeName")
+    void updateIntensityByName(String drinkTypeName, int newIntensity);
+
 
 
 
@@ -36,5 +41,12 @@ public interface DrinkTypeRepository extends JpaRepository<DrinkType, Integer> {
     @Modifying
     @Query("UPDATE DrinkType d SET d.drinkSizeL = :newDrinkSizeL WHERE d.drinkTypeId = :drinkTypeId")
     void updateDrinkSizeLById(int drinkTypeId, int newDrinkSizeL);
+
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE DrinkType d SET d.intensity = :newIntensity WHERE d.drinkTypeId = :drinkTypeId")
+    void updateIntensityById(int drinkTypeId, int newIntensity);
+
 
 }

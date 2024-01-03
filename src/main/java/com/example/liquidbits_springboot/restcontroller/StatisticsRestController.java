@@ -66,7 +66,9 @@ public class StatisticsRestController {
             csDTO.setDrinkSizeS(container.getDrinkType().getDrinkSizeS());
             csDTO.setDrinkSizeL(container.getDrinkType().getDrinkSizeL());
             csDTO.setStatus(Container.setStatusInDTO(container));
+            csDTO.setIntensity(container.getDrinkType().getIntensity());
             tsDTO.setName(container.getDrinkType().getName());
+
 
             // ... Daten auswerten
             // ... all drinks from container
@@ -154,13 +156,14 @@ public class StatisticsRestController {
     }
 
 
-    @PutMapping(value = "/drinkStatisticsBarrel/{drinkTypeName}/{drinkSizeS}/{drinkSizeL}")
-    public void updateDrinkSizes(@PathVariable String drinkTypeName, @PathVariable int drinkSizeS, @PathVariable int drinkSizeL) {
+    @PutMapping(value = "/drinkStatisticsBarrel/{drinkTypeName}/{drinkSizeS}/{drinkSizeL}/{intensity}")
+    public void updateDrinkSizesIntensity(@PathVariable String drinkTypeName, @PathVariable int drinkSizeS, @PathVariable int drinkSizeL, @PathVariable int intensity) {
         logger.info(LogUtils.info(className, "updateDrinkSizes"));
         ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
 
         drinkTypeRepository.updateDrinkSizeSByName(drinkTypeName, drinkSizeS);
         drinkTypeRepository.updateDrinkSizeLByName(drinkTypeName, drinkSizeL);
+        drinkTypeRepository.updateIntensityByName(drinkTypeName, intensity);
 
     }
 
