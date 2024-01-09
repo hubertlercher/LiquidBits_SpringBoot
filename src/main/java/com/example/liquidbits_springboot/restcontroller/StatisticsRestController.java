@@ -8,6 +8,7 @@ import com.example.liquidbits_springboot.dto.TimeStatisticsDTO;
 import com.example.liquidbits_springboot.dto.UserStatisticsDTO;
 import com.example.liquidbits_springboot.model.Container;
 import com.example.liquidbits_springboot.model.Drink;
+import com.example.liquidbits_springboot.model.DrinkType;
 import com.example.liquidbits_springboot.model.User;
 import com.example.liquidbits_springboot.repository.ContainerRepository;
 import com.example.liquidbits_springboot.repository.DrinkRepository;
@@ -56,7 +57,7 @@ public class StatisticsRestController {
         StatisticsDTO stats = new StatisticsDTO();
 
         List<Container> containersTapped = containerRepository.findContainerByTappedIsNotNullAndAndUntappedIsNull();
-        List<Container> allContainers = containerRepository.findAll();
+        List<DrinkType> drinkTypes = drinkTypeRepository.findAll();
 
 
 
@@ -81,19 +82,19 @@ public class StatisticsRestController {
         }
 
 
-        for(Container container : allContainers) {
+        for(DrinkType drinkType : drinkTypes) {
 
             TimeStatisticsDTO tsDTO = new TimeStatisticsDTO();
-            tsDTO.setName(container.getDrinkType().getName());
+            tsDTO.setName(drinkType.getName());
 
             // ... Daten auswerten - StatisticsTime
             // ... all drinks from container
-            for (Drink drink : container.getDrinks()) {
+            for (Drink drink : drinkType.getDrinks()) {
 
                 //täglich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
-                Map<Integer, Double> amountsByHour = container.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2023, 12, 19).getDayOfMonth())
+                Map<Integer, Double> amountsByHour = drinkType.getDrinks().stream()
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2023,12,19).getDayOfMonth())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getHours(),
                                 Collectors.summingDouble(Drink::getAmount)
@@ -109,8 +110,8 @@ public class StatisticsRestController {
 
                 //monatlich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
-                Map<Integer, Double> amountsByDay = container.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2023, 12, 19).getMonthValue())
+                Map<Integer, Double> amountsByDay = drinkType.getDrinks().stream()
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2023,12,19).getMonthValue())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().toLocalDateTime().getDayOfMonth(),
                                 Collectors.summingDouble(Drink::getAmount)
@@ -124,8 +125,8 @@ public class StatisticsRestController {
                 tsDTO.setMonthly(amountsForMonth);
 
                 //jährlich
-                Map<Integer, Double> amountsByMonth = container.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2023, 12, 19).getYear())
+                Map<Integer, Double> amountsByMonth = drinkType.getDrinks().stream()
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2023,12,19).getYear())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getMonth(),
                                 Collectors.summingDouble(Drink::getAmount)
@@ -139,9 +140,7 @@ public class StatisticsRestController {
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setAnnually(amountsForYear);
 
-
             }
-
 
             stats.getDrinkStatisticsTime().add(tsDTO);
 
