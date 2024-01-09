@@ -142,18 +142,18 @@ public class Container implements Serializable {
     //region Methods
 
 
-    public static int calcBarrelLevel(Container container) {
-        int level = 0;
-        int dispensed;
+    public static double calcBarrelLevel(Container container) {
+        double level = 0;
+        double dispensed;
 
         dispensed = container.getDrinks().stream()
-                .mapToInt(drink -> drink.getAmount())
+                .mapToDouble(drink -> drink.getAmount())
                 .sum();
 
-        level = container.getSizeMl() - dispensed;
+        level = (container.getSizeMl() - dispensed);
 
         // toDo Prozent
-        int percent = level / (container.getSizeMl() / 100);
+        double percent = level / (container.getSizeMl() / 100);
 
         return percent;
 

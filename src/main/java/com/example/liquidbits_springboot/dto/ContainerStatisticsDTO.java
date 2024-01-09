@@ -10,7 +10,7 @@ public class ContainerStatisticsDTO {
     private int drinkTypeId;
     private String name;
     private String status;
-    private int barrelLevel;
+    private double barrelLevel;
     private int drinkSizeL;
     private int drinkSizeS;
     private LocalDate lastMaintenance;
@@ -33,11 +33,11 @@ public class ContainerStatisticsDTO {
         this.status = status;
     }
 
-    public int getBarrelLevel() {
+    public double getBarrelLevel() {
         return barrelLevel;
     }
 
-    public void setBarrelLevel(int barrelLevel) {
+    public void setBarrelLevel(double barrelLevel) {
         this.barrelLevel = barrelLevel;
     }
 

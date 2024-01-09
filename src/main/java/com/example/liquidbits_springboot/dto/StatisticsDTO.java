@@ -10,6 +10,9 @@ public class StatisticsDTO {
     private List<ContainerStatisticsDTO> drinkStatisticsBarrel = new ArrayList<>();
 
     private List<TimeStatisticsDTO> drinkStatisticsTime = new ArrayList<>();
+
+    private List<UserStatisticsDTO> userStatistics = new ArrayList<>();
+
     //endregion
 
     //region Getter and Setter
@@ -28,6 +31,15 @@ public class StatisticsDTO {
     public void setDrinkStatisticsTime(List<TimeStatisticsDTO> drinkStatisticsTime) {
         this.drinkStatisticsTime = drinkStatisticsTime;
     }
+
+    public List<UserStatisticsDTO> getUserStatistics() {
+        return userStatistics;
+    }
+
+    public void setUserStatistics(List<UserStatisticsDTO> userStatistics) {
+        this.userStatistics = userStatistics;
+    }
+
     //endregion
 }
 

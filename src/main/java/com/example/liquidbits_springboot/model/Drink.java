@@ -33,7 +33,7 @@ public class Drink implements Serializable {
     private int drinkId;
 
     @Column(name = "AMOUNT")
-    private Integer amount;
+    private double amount;
     @NotNull
     @JsonProperty("drinkType")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -70,11 +70,11 @@ public class Drink implements Serializable {
         this.drinkId = drinkId;
     }
 
-    public Integer getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

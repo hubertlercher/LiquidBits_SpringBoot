@@ -9,9 +9,9 @@ public class TimeStatisticsDTO {
 
     private String name;
     private LocalDate date = LocalDate.now();
-    private List<Integer> daily;
-    private List<Integer> monthly;
-    private List<Integer> annually;
+    private List<Double> daily;
+    private List<Double> monthly;
+    private List<Double> annually;
 
 
     //region Getter and Setter
@@ -23,27 +23,27 @@ public class TimeStatisticsDTO {
         this.date = date;
     }
 
-    public List<Integer> getDaily() {
+    public List<Double> getDaily() {
         return daily;
     }
 
-    public void setDaily(List<Integer> daily) {
+    public void setDaily(List<Double> daily) {
         this.daily = daily;
     }
 
-    public List<Integer> getMonthly() {
+    public List<Double> getMonthly() {
         return monthly;
     }
 
-    public void setMonthly(List<Integer> monthly) {
+    public void setMonthly(List<Double> monthly) {
         this.monthly = monthly;
     }
 
-    public List<Integer> getAnnually() {
+    public List<Double> getAnnually() {
         return annually;
     }
 
-    public void setAnnually(List<Integer> annually) {
+    public void setAnnually(List<Double> annually) {
         this.annually = annually;
     }
     //endregion

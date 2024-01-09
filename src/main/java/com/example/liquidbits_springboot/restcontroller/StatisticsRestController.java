@@ -5,12 +5,14 @@ import com.example.liquidbits_springboot.api.LogUtils;
 import com.example.liquidbits_springboot.dto.ContainerStatisticsDTO;
 import com.example.liquidbits_springboot.dto.StatisticsDTO;
 import com.example.liquidbits_springboot.dto.TimeStatisticsDTO;
+import com.example.liquidbits_springboot.dto.UserStatisticsDTO;
 import com.example.liquidbits_springboot.model.Container;
 import com.example.liquidbits_springboot.model.Drink;
-import com.example.liquidbits_springboot.model.DrinkType;
+import com.example.liquidbits_springboot.model.User;
 import com.example.liquidbits_springboot.repository.ContainerRepository;
 import com.example.liquidbits_springboot.repository.DrinkRepository;
 import com.example.liquidbits_springboot.repository.DrinkTypeRepository;
+import com.example.liquidbits_springboot.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
@@ -44,6 +45,9 @@ public class StatisticsRestController {
 
     @Autowired
     DrinkTypeRepository drinkTypeRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping(value = "")
     public StatisticsDTO getStats() {
@@ -70,22 +74,22 @@ public class StatisticsRestController {
             tsDTO.setName(container.getDrinkType().getName());
 
 
-            // ... Daten auswerten
+            // ... Daten auswerten - StatisticsTime
             // ... all drinks from container
             for (Drink drink : container.getDrinks()) {
 
                 //täglich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
-                Map<Integer, Integer> amountsByHour = container.getDrinks().stream()
+                Map<Integer, Double> amountsByHour = container.getDrinks().stream()
                         .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2023, 12, 19).getDayOfMonth())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getHours(),
-                                Collectors.summingInt(Drink::getAmount)
+                                Collectors.summingDouble(Drink::getAmount)
                         ));
                 // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
-                List<Integer> amountsForDay = new ArrayList<>();
+                List<Double> amountsForDay = new ArrayList<>();
                 for (int i = 0; i < 24; i++) {
-                    amountsForDay.add(amountsByHour.getOrDefault(i, 0));
+                    amountsForDay.add(amountsByHour.getOrDefault(i, Double.valueOf(0)));
                 }
 
                 // Setzen der Liste in das tsDTO-Objekt
@@ -93,31 +97,31 @@ public class StatisticsRestController {
 
                 //monatlich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
-                Map<Integer, Integer> amountsByDay = container.getDrinks().stream()
+                Map<Integer, Double> amountsByDay = container.getDrinks().stream()
                         .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2023, 12, 19).getMonthValue())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().toLocalDateTime().getDayOfMonth(),
-                                Collectors.summingInt(Drink::getAmount)
+                                Collectors.summingDouble(Drink::getAmount)
                         ));
                 // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
-                List<Integer> amountsForMonth = new ArrayList<>();
+                List<Double> amountsForMonth = new ArrayList<>();
                 for (int i = 0; i < LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()); i++) {
-                    amountsForMonth.add(amountsByDay.getOrDefault(i, 0));
+                    amountsForMonth.add(amountsByDay.getOrDefault(i, Double.valueOf(0)));
                 }
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setMonthly(amountsForMonth);
 
                 //jährlich
-                Map<Integer, Integer> amountsByMonth = container.getDrinks().stream()
+                Map<Integer, Double> amountsByMonth = container.getDrinks().stream()
                         .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2023, 12, 19).getYear())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getMonth(),
-                                Collectors.summingInt(Drink::getAmount)
+                                Collectors.summingDouble(Drink::getAmount)
                         ));
                 // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
-                List<Integer> amountsForYear = new ArrayList<>();
+                List<Double> amountsForYear = new ArrayList<>();
                 for (int i = 0; i < 12; i++) {
-                    amountsForYear.add(amountsByMonth.getOrDefault(i, 0));
+                    amountsForYear.add(amountsByMonth.getOrDefault(i, Double.valueOf(0)));
                 }
 
                 // Setzen der Liste in das tsDTO-Objekt
@@ -130,6 +134,31 @@ public class StatisticsRestController {
             stats.getDrinkStatisticsTime().add(tsDTO);
 
         }
+
+        List<User> users = userRepository.findAll();
+
+        for(User user : users) {
+            UserStatisticsDTO usDTO = new UserStatisticsDTO();
+
+            usDTO.setName(user.getName());
+            usDTO.setImage(user.getImage());
+
+            for(Drink drink : user.getDrinks()) {
+
+                double drinksServedL = user.getDrinks()
+                        .stream()
+                        .mapToDouble(drinks -> drinks.getAmount())
+                        .sum();
+
+                drinksServedL = drinksServedL/1000;                                 //Umrechnung in Liter
+
+                drinksServedL = Math.round(drinksServedL * 100.0) / 100.0;          //Runden auf zwei Nachkommastellen
+
+                usDTO.setDrinksServedL(drinksServedL);
+            }
+            stats.getUserStatistics().add(usDTO);
+        }
+
 
         return stats;
     }

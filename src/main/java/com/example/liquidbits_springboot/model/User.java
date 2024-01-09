@@ -20,8 +20,8 @@ public class User implements Serializable {
     @Column(name = "USER_ID")
     private int userId;
     @JsonIgnore
-    @Column(name = "USERNAME")
-    private String username;
+    @Column(name = "NAME")
+    private String name;
     @JsonIgnore
     @Column(name = "MAIL")
     private String mail;
@@ -31,6 +31,10 @@ public class User implements Serializable {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private Set<Drink> drinks = new HashSet<>();
+
+    @JsonIgnore
+    @Column(name = "IMAGE")
+    private byte[] image;
 
     //region Constructor
 
@@ -54,12 +58,12 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String username) {
+        this.name = username;
     }
 
     public String getMail() {
@@ -70,17 +74,25 @@ public class User implements Serializable {
         this.mail = mail;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return userId == user.userId && Objects.equals(username, user.username) && Objects.equals(mail, user.mail);
+        return userId == user.userId && Objects.equals(name, user.name) && Objects.equals(mail, user.mail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, mail);
+        return Objects.hash(userId, name, mail);
     }
 
     public Collection<Drink> getDrinks() {
