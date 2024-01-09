@@ -34,7 +34,7 @@ public class User implements Serializable {
 
     @JsonIgnore
     @Column(name = "IMAGE")
-    private byte[] image;
+    private String image;
 
     //region Constructor
 
@@ -74,11 +74,11 @@ public class User implements Serializable {
         this.mail = mail;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

@@ -4,7 +4,7 @@ public class UserStatisticsDTO {
 
     //region Properties
     private String name;
-    private byte[] image;
+    private String image;
     private double drinksServedL;
     //endregion Properties
 
@@ -18,11 +18,11 @@ public class UserStatisticsDTO {
         this.name = name;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

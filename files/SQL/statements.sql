@@ -40,8 +40,9 @@ INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id)
 VALUES (250, 2,2,1,2);
 
 
-INSERT INTO USER(NAME, MAIL, IMAGE)
-VALUES ('Hubert', 'hubert.lercher@icloud.com', load_file('files/Images/IMG_0152.jpg'))
+UPDATE USER
+SET IMAGE = '/resources/images/Dope.jpeg'
+WHERE USER_ID = 1;
 
 
 
