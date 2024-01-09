@@ -55,12 +55,16 @@ public class StatisticsRestController {
 
         StatisticsDTO stats = new StatisticsDTO();
 
-        List<Container> containers = containerRepository.findAll();
+        List<Container> containersTapped = containerRepository.findContainerByTappedIsNotNullAndAndUntappedIsNull();
+        List<Container> allContainers = containerRepository.findAll();
 
 
-        for (Container container : containers) {
+
+
+
+        for (Container container : containersTapped) {
+
             ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
-            TimeStatisticsDTO tsDTO = new TimeStatisticsDTO();
 
             csDTO.setDrinkTypeId(container.getDrinkType().getDrinkTypeId());
             csDTO.setName(container.getDrinkType().getName());
@@ -71,8 +75,16 @@ public class StatisticsRestController {
             csDTO.setDrinkSizeL(container.getDrinkType().getDrinkSizeL());
             csDTO.setStatus(Container.setStatusInDTO(container));
             csDTO.setIntensity(container.getDrinkType().getIntensity());
-            tsDTO.setName(container.getDrinkType().getName());
+            stats.getDrinkStatisticsBarrel().add(csDTO);
 
+
+        }
+
+
+        for(Container container : allContainers) {
+
+            TimeStatisticsDTO tsDTO = new TimeStatisticsDTO();
+            tsDTO.setName(container.getDrinkType().getName());
 
             // ... Daten auswerten - StatisticsTime
             // ... all drinks from container
@@ -130,7 +142,7 @@ public class StatisticsRestController {
 
             }
 
-            stats.getDrinkStatisticsBarrel().add(csDTO);
+
             stats.getDrinkStatisticsTime().add(tsDTO);
 
         }

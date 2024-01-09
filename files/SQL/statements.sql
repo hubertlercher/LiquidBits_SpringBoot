@@ -44,6 +44,31 @@ UPDATE USER
 SET IMAGE = '/resources/images/Dope.jpeg'
 WHERE USER_ID = 1;
 
+UPDATE CONTAINER
+SET UNTAPPED = NOW()
+WHERE CONTAINER_ID = 1;
 
+UPDATE CONTAINER
+SET UNTAPPED = NOW()
+WHERE CONTAINER_ID = 2;
+
+
+INSERT INTO CONTAINER(TAPPED, SIZE_ML, DRINKTYPE_ID, STATUS)
+VALUES(NOW(), 50000, 1, 'OK');
+
+INSERT INTO CONTAINER(TAPPED, SIZE_ML, DRINKTYPE_ID, STATUS)
+VALUES(NOW(), 25000, 2, 'OK');
+
+INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
+VALUES (125, 2,4,1,2, NOW());
+
+INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
+VALUES (125, 2,4,1,2, NOW());
+
+INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
+VALUES (500, 1,5,1,2, NOW());
+
+INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
+VALUES (500, 1,5,1,2, NOW());
 
 
