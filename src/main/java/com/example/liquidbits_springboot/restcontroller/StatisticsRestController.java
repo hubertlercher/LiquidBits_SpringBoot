@@ -62,7 +62,6 @@ public class StatisticsRestController {
 
 
 
-
         for (Container container : containersTapped) {
 
             ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
