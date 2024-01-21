@@ -72,3 +72,7 @@ INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMEST
 VALUES (500, 1,5,1,2, NOW());
 
 
+alter table DRINKTYPE
+    add LAST_CLEANING TIMESTAMP null;
+
+

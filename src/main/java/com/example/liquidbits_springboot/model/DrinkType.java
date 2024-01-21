@@ -21,39 +21,44 @@ public class DrinkType implements Serializable {
     @Id
     @Column(name = "DRINKTYPE_ID")
     private int drinkTypeId;
-    @JsonIgnore
+
     @Column(name = "NAME")
     private String name;
-    @JsonIgnore
+
     @Column(name = "ALCVALUE")
     private Integer alcvalue;
-    @JsonIgnore
+
     @Column(name = "INTENSITY")
     private Integer intensity;
+
     @JsonIgnore
     @OneToMany(mappedBy = "drinkType",
             cascade = CascadeType.MERGE,
-            orphanRemoval = true,
+            orphanRemoval = false,
             fetch = FetchType.LAZY)
     private Collection<Container> containers;
+
     @JsonIgnore
     @OneToMany(mappedBy = "drinkType",
             cascade = CascadeType.MERGE,
-            orphanRemoval = true,
+            orphanRemoval = false,
             fetch = FetchType.LAZY)
     private Collection<Drink> drinks;
 
-    @JsonIgnore
+
     @Column(name = "DRINKSIZE_S")
     private int drinkSizeS;
 
-    @JsonIgnore
+
     @Column(name = "DRINKSIZE_L")
     private int drinkSizeL;
 
-    @JsonIgnore
+
     @Column(name = "LAST_MAINTENANCE")
     private LocalDate lastMaintenance;
+
+    @Column(name = "LAST_CLEANING")
+    private LocalDate lastCleaning;
     //endregion
 
     //region Constructor
@@ -139,6 +144,14 @@ public class DrinkType implements Serializable {
 
     public void setLastMaintenance(LocalDate lastMaintenance) {
         this.lastMaintenance = lastMaintenance;
+    }
+
+    public LocalDate getLastCleaning() {
+        return lastCleaning;
+    }
+
+    public void setLastCleaning(LocalDate lastCleaning) {
+        this.lastCleaning = lastCleaning;
     }
 
     //endregion

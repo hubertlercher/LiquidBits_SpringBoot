@@ -19,10 +19,10 @@ public class User implements Serializable {
     @Id
     @Column(name = "USER_ID")
     private int userId;
-    @JsonIgnore
+
     @Column(name = "NAME")
     private String name;
-    @JsonIgnore
+
     @Column(name = "MAIL")
     private String mail;
     @JsonIgnore
@@ -32,7 +32,7 @@ public class User implements Serializable {
             fetch = FetchType.LAZY)
     private Set<Drink> drinks = new HashSet<>();
 
-    @JsonIgnore
+
     @Column(name = "IMAGE")
     private String image;
 

@@ -56,7 +56,7 @@ public class StatisticsRestController {
 
         StatisticsDTO stats = new StatisticsDTO();
 
-        List<Container> containersTapped = containerRepository.findContainerByTappedIsNotNullAndAndUntappedIsNull();
+        List<Container> containersTapped = containerRepository.findContainersByTappedIsNotNullAndAndUntappedIsNull();
         List<DrinkType> drinkTypes = drinkTypeRepository.findAll();
 
 
@@ -71,6 +71,7 @@ public class StatisticsRestController {
             csDTO.setBarrelLevel(Container.calcBarrelLevel(container));
             csDTO.setLastMaintenance(container.getDrinkType().getLastMaintenance());
             csDTO.setNextMaintenance(csDTO.getLastMaintenance().plusMonths(6));
+            csDTO.setLastCleaning(container.getDrinkType().getLastCleaning());
             csDTO.setDrinkSizeS(container.getDrinkType().getDrinkSizeS());
             csDTO.setDrinkSizeL(container.getDrinkType().getDrinkSizeL());
             csDTO.setStatus(Container.setStatusInDTO(container));
@@ -186,6 +187,7 @@ public class StatisticsRestController {
                 csDTO.setBarrelLevel(Container.calcBarrelLevel(container));
                 csDTO.setLastMaintenance(container.getDrinkType().getLastMaintenance());
                 csDTO.setNextMaintenance(csDTO.getLastMaintenance().plusMonths(6));
+                csDTO.setLastCleaning(container.getDrinkType().getLastCleaning());
                 csDTO.setDrinkSizeS(container.getDrinkType().getDrinkSizeS());
                 csDTO.setDrinkSizeL(container.getDrinkType().getDrinkSizeL());
                 csDTO.setStatus(Container.setStatusInDTO(container));

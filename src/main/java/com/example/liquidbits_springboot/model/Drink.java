@@ -35,24 +35,28 @@ public class Drink implements Serializable {
     @Column(name = "AMOUNT")
     private double amount;
     @NotNull
-    @JsonProperty("drinkType")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "DRINKTYPE_ID")
+    @JsonProperty("drinktype")
+    @JsonIgnoreProperties({"name", "alcvalue", "intensity", "drinkSizeS", "drinkSizeL", "lastMaintenance", "lastCleaning", "containers", "drinks"})
     private DrinkType drinkType;
     @NotNull
     @JsonProperty("container")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CONTAINER_ID")
+    @JsonIgnoreProperties({"tapped", "sizeMl", "drinkTypeId", "untapped", "status", "drinkType"})
     private Container container;
     @NotNull
     @JsonProperty("device")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "DEVICE_ID")
+    @JsonIgnoreProperties({"location", "manufacturer", "modell"})
     private Device device;
     @NotNull
     @JsonProperty("user")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID")
+    @JsonIgnoreProperties({"name", "mail", "image"})
     private User user;
     @NotNull
     @Column(name = "TIMESTAMP")

@@ -15,6 +15,7 @@ public class ContainerStatisticsDTO {
     private int drinkSizeS;
     private LocalDate lastMaintenance;
     private LocalDate nextMaintenance;
+    private LocalDate lastCleaning;
     private int intensity;
 
     public String getName() {
@@ -87,6 +88,14 @@ public class ContainerStatisticsDTO {
 
     public void setIntensity(int intensity) {
         this.intensity = intensity;
+    }
+
+    public LocalDate getLastCleaning() {
+        return lastCleaning;
+    }
+
+    public void setLastCleaning(LocalDate lastCleaning) {
+        this.lastCleaning = lastCleaning;
     }
 }
 

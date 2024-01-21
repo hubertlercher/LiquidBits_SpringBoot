@@ -23,17 +23,18 @@ public class Container implements Serializable {
     @Column(name = "CONTAINER_ID")
     private int containerId;
 
-    @JsonIgnore
+
     @Column(name = "TAPPED")
     private Date tapped;
 
-    @JsonIgnore
+
     @Column(name = "SIZE_ML")
     private int sizeMl;
 
-    @JsonIgnore
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DRINKTYPE_ID", referencedColumnName = "DRINKTYPE_ID", nullable = false)
+    @JoinColumn(name = "DRINKTYPE_ID")
+    @JsonIgnoreProperties({"name", "alcvalue", "intensity", "drinkSizeS", "drinkSizeL", "lastMaintenance", "lastCleaning"})
     private DrinkType drinkType;
 
     @JsonIgnore
@@ -43,11 +44,11 @@ public class Container implements Serializable {
             fetch = FetchType.LAZY)
     private Set<Drink> drinks = new HashSet<>();
 
-    @JsonIgnore
+
     @Column(name = "UNTAPPED")
     private LocalDateTime untapped;
 
-    @JsonIgnore
+
     @Column(name = "STATUS")
     private String status;
     //endregion
