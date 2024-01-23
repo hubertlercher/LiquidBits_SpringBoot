@@ -75,4 +75,58 @@ VALUES (500, 1,5,1,2, NOW());
 alter table DRINKTYPE
     add LAST_CLEANING TIMESTAMP null;
 
+INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
+VALUES (45000, 1,5,1,2, NOW());
+
+
+
+INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
+VALUES (40000, 2,4,1,2, NOW());
+
+INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
+VALUES (20000, 2,4,1,2, NOW());
+
+
+-- Wartungsbuch SQL-Statements
+
+-- create table MAINTENANCE_LOG;
+-- alter table MAINTENANCE_LOG
+--     add LOG_ID int;
+
+-- alter table MAINTENANCE_LOG
+--     add constraint MAINTENANCE_LOG_pk
+--         primary key (LOG_ID);
+
+-- alter table MAINTENANCE_LOG
+--     modify LOG_ID int auto_increment;
+
+-- alter table MAINTENANCE_LOG
+-- add DESCRIPTION VARCHAR(200) not null;
+
+-- alter table MAINTENANCE_LOG
+-- add DRINKTYPE_ID int not null;
+
+-- alter table MAINTENANCE_LOG
+--    add constraint MAINTENANCE_LOG__DRINKTYPE_ID_fk
+--        foreign key (DRINKTYPE_ID) references DRINKTYPE(DRINKTYPE_ID);
+
+-- alter table MAINTENANCE_LOG
+--    add DEVICE_ID int not null;
+
+
+-- alter table MAINTENANCE_LOG
+--    add constraint MAINTENANCE_LOG_DEVICE_DEVICE_ID_fk
+--        foreign key (DEVICE_ID) references DEVICE (DEVICE_ID);
+
+-- alter table MAINTENANCE_LOG
+--    add TIMESTAMP TIMESTAMP default NOW() not null;
+
+
+
+
+
+
+
+
+
 
