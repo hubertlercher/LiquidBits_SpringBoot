@@ -8,7 +8,7 @@ import java.util.List;
 public class TimeStatisticsDTO {
 
     private String name;
-    private LocalDate date = LocalDate.now();
+    private LocalDate date;
     private List<Double> daily;
     private List<Double> monthly;
     private List<Double> annually;

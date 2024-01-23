@@ -86,6 +86,7 @@ public class StatisticsRestController {
 
             TimeStatisticsDTO tsDTO = new TimeStatisticsDTO();
             tsDTO.setName(drinkType.getName());
+            tsDTO.setDate(LocalDate.of(2023,12,19));
 
             // ... Daten auswerten - StatisticsTime
             // ... all drinks from container
