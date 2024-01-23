@@ -1,13 +1,16 @@
 package com.example.liquidbits_springboot.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.mapping.Map;
 
 import java.time.LocalDate;
 import java.util.List;
 
+
 public class TimeStatisticsDTO {
 
     private String name;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
     private List<Double> daily;
     private List<Double> monthly;

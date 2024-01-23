@@ -1,6 +1,7 @@
 package com.example.liquidbits_springboot.dto;
 
 import com.example.liquidbits_springboot.model.Container;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.JoinColumn;
 
 import java.time.LocalDate;
@@ -13,8 +14,11 @@ public class ContainerStatisticsDTO {
     private double barrelLevel;
     private int drinkSizeL;
     private int drinkSizeS;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate lastMaintenance;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate nextMaintenance;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate lastCleaning;
     private int intensity;
 
