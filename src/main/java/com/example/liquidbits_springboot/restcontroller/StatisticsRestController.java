@@ -2,10 +2,7 @@ package com.example.liquidbits_springboot.restcontroller;
 
 import com.example.liquidbits_springboot.api.ErrorsUtils;
 import com.example.liquidbits_springboot.api.LogUtils;
-import com.example.liquidbits_springboot.dto.ContainerStatisticsDTO;
-import com.example.liquidbits_springboot.dto.StatisticsDTO;
-import com.example.liquidbits_springboot.dto.TimeStatisticsDTO;
-import com.example.liquidbits_springboot.dto.UserStatisticsDTO;
+import com.example.liquidbits_springboot.dto.*;
 import com.example.liquidbits_springboot.model.Container;
 import com.example.liquidbits_springboot.model.Drink;
 import com.example.liquidbits_springboot.model.DrinkType;
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -85,8 +83,10 @@ public class StatisticsRestController {
         for(DrinkType drinkType : drinkTypes) {
 
             TimeStatisticsDTO tsDTO = new TimeStatisticsDTO();
+            DrinkStatisticsDTO dsDTO = new DrinkStatisticsDTO();
             tsDTO.setName(drinkType.getName());
             tsDTO.setDate(LocalDate.of(2023,12,19));
+            dsDTO.setName(drinkType.getName());
 
             // ... Daten auswerten - StatisticsTime
             // ... all drinks from container
@@ -108,6 +108,13 @@ public class StatisticsRestController {
 
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setDaily(amountsForDay);
+
+                //DrinkStatistics Wochen definieren
+
+                //DrinkStatistics Berechnung wöchentlich
+                /*drinkType.getDrinks().stream()
+                        .filter(d -> d.getTimestamp().toLocalDateTime().isAfter(startOfWeek) && d.getTimestamp().toLocalDateTime().isBefore(endOfWeek))
+                        .count();*/
 
                 //monatlich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen

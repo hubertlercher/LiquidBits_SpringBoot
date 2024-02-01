@@ -49,6 +49,7 @@ public class TimeStatisticsDTO {
     public void setAnnually(List<Double> annually) {
         this.annually = annually;
     }
+
     //endregion
 
 

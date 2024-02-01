@@ -82,6 +82,7 @@ public class User implements Serializable {
         this.image = image;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,4 +103,7 @@ public class User implements Serializable {
     public void setDrinks(Set<Drink> drinks) {
         this.drinks = drinks;
     }
+
+
+
 }
