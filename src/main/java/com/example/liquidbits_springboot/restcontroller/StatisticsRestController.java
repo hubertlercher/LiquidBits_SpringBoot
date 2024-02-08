@@ -166,6 +166,7 @@ public class StatisticsRestController {
 
                 double drinksServedL = user.getDrinks()
                         .stream()
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.now().getMonthValue())
                         .mapToDouble(drinks -> drinks.getAmount())
                         .sum();
 
