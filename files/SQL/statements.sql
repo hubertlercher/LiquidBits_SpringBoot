@@ -124,6 +124,14 @@ VALUES (20000, 2,4,1,2, NOW());
 
 
 
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Intensiv-Reinigung', 1, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Intensiv-Reinigung', 2, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Desinfektion', 3, 1, NOW());
 
 
 

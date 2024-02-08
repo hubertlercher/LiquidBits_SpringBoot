@@ -45,6 +45,13 @@ public class DrinkType implements Serializable {
             fetch = FetchType.LAZY)
     private Collection<Drink> drinks;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "drinkType",
+            cascade = CascadeType.MERGE,
+            orphanRemoval = false,
+            fetch = FetchType.LAZY)
+    private Collection<MaintenanceLog> logs;
+
 
     @Column(name = "DRINKSIZE_S")
     private int drinkSizeS;
@@ -152,6 +159,14 @@ public class DrinkType implements Serializable {
 
     public void setLastCleaning(LocalDate lastCleaning) {
         this.lastCleaning = lastCleaning;
+    }
+
+    public Collection<MaintenanceLog> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(Collection<MaintenanceLog> logs) {
+        this.logs = logs;
     }
 
     //endregion
