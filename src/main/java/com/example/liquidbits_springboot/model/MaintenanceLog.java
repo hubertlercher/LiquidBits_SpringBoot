@@ -1,5 +1,6 @@
 package com.example.liquidbits_springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -43,6 +44,7 @@ public class MaintenanceLog {
     @JsonIgnoreProperties({"name", "mail", "telephone"})
     private Contact contact;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     @Column(name = "TIMESTAMP")
     private LocalDateTime timestamp;
 
