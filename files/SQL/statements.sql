@@ -178,6 +178,39 @@ INSERT INTO USER(SURNAME, FIRSTNAME, mail)
 VALUES ('Kargl', 'Henry', 'henry.kargl@edu.htl-klu.at');
 
 
+
+
+NEUE LOGS
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Intensiv-Reinigung', 1, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Intensiv-Reinigung', 2, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Intensiv-Reinigung', 3, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Desinfektion', 1, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Desinfektion', 2, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Desinfektion', 3, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Allgemeine Service-Wartung', 1, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Allgemeine Service-Wartung', 2, 1, NOW());
+
+INSERT INTO MAINTENANCE_LOG(description, drinktype_id, device_id, timestamp)
+VALUES ('Allgemeine Service-Wartung', 3, 1, NOW());
+
+
+
 */
 
 
