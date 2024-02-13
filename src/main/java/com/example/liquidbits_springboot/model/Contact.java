@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "CONTACT_BOOK")
+@Table(name = "CONTACT")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Contact implements Serializable {
 
