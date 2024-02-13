@@ -154,7 +154,7 @@ public class Container implements Serializable {
         level = (container.getSizeMl() - dispensed);
 
         // toDo Prozent
-        double percent = level / (container.getSizeMl() / 100);
+        double percent = Math.round(level / (container.getSizeMl() / 100));
 
         return percent;
 
