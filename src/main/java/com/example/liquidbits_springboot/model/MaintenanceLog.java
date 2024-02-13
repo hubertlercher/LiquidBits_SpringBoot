@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -35,6 +37,16 @@ public class MaintenanceLog {
     @JoinColumn(name = "DEVICE_ID")
     @JsonIgnoreProperties({"location", "manufacturer", "modell"})
     private Device device;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CONTACT_ID")
+    @JsonIgnoreProperties({"name", "mail", "telephone"})
+    private Contact contact;
+
+    @Column(name = "TIMESTAMP")
+    private LocalDateTime timestamp;
+
+
     //endregion
 
     //region Constructor
@@ -80,7 +92,23 @@ public class MaintenanceLog {
     public void setDevice(Device device) {
         this.device = device;
     }
-    //endregion
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
+//endregion
 
     //region equals hashCode
     @Override
@@ -98,6 +126,7 @@ public class MaintenanceLog {
     //endregion
 
     //region toString
+
     @Override
     public String toString() {
         return "MaintenanceLog{" +
@@ -105,8 +134,11 @@ public class MaintenanceLog {
                 ", description='" + description + '\'' +
                 ", drinkType=" + drinkType +
                 ", device=" + device +
+                ", contact=" + contact +
+                ", timestamp=" + timestamp +
                 '}';
     }
+
     //endregion
 
 

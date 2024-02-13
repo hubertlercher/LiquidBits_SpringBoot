@@ -20,8 +20,11 @@ public class User implements Serializable {
     @Column(name = "USER_ID")
     private int userId;
 
-    @Column(name = "NAME")
-    private String name;
+    @Column(name = "SURNAME")
+    private String surname;
+
+    @Column(name = "FIRSTNAME")
+    private String firstname;
 
     @Column(name = "MAIL")
     private String mail;
@@ -58,14 +61,6 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String username) {
-        this.name = username;
-    }
-
     public String getMail() {
         return mail;
     }
@@ -82,20 +77,6 @@ public class User implements Serializable {
         this.image = image;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return userId == user.userId && Objects.equals(name, user.name) && Objects.equals(mail, user.mail);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, name, mail);
-    }
-
     public Collection<Drink> getDrinks() {
         return drinks;
     }
@@ -104,6 +85,51 @@ public class User implements Serializable {
         this.drinks = drinks;
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+    //endregion
 
 
+    //region haschCode equals
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId == user.userId && Objects.equals(surname, user.surname) && Objects.equals(firstname, user.firstname) && Objects.equals(mail, user.mail) && Objects.equals(drinks, user.drinks) && Objects.equals(image, user.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, surname, firstname, mail, drinks, image);
+    }
+    //endregion
+
+    //region toString
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", surname='" + surname + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", mail='" + mail + '\'' +
+                '}';
+    }
+
+    //endregion
 }

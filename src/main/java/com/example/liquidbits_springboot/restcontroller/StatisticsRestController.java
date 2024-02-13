@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -159,7 +158,8 @@ public class StatisticsRestController {
         for(User user : users) {
             UserStatisticsDTO usDTO = new UserStatisticsDTO();
 
-            usDTO.setName(user.getName());
+            usDTO.setSurname(user.getSurname());
+            usDTO.setFirstname(user.getFirstname());
             usDTO.setImage(user.getImage());
 
             for(Drink drink : user.getDrinks()) {

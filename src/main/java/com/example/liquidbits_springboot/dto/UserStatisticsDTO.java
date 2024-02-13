@@ -3,19 +3,20 @@ package com.example.liquidbits_springboot.dto;
 public class UserStatisticsDTO {
 
     //region Properties
-    private String name;
+    private String surname;
+    private String firstname;
     private String image;
     private double drinksServedL;
     //endregion Properties
 
     //region Getter and Setter
 
-    public String getName() {
-        return name;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getImage() {
@@ -34,8 +35,15 @@ public class UserStatisticsDTO {
         this.drinksServedL = drinksServedL;
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
 
-    //endregion Getter and Setter
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+//endregion Getter and Setter
 
 
 }

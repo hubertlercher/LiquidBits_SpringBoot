@@ -12,13 +12,13 @@ VALUES ('Juice', 0, 0);
 INSERT INTO DEVICE(LOCATION, MANUFACTURER, MODELL)
 VALUES ('HTL Mössingerstrasse', 'liquidBits', 'iSchank');
 
-INSERT INTO USER(NAME, mail)
+INSERT INTO USER(SURNAME, mail)
 VALUES ('Hubi', 'hubert.lercher@edu.htl-klu.at');
 
-INSERT INTO USER(NAME, mail)
+INSERT INTO USER(SURNAME, mail)
 VALUES ('Dopler', 'stephan.dopler@edu.htl-klu.at');
 
-INSERT INTO USER(NAME, mail)
+INSERT INTO USER(SURNAME, mail)
 VALUES ('Falge', 'daniel.falgenhauer@edu.htl-klu.at');
 
 INSERT INTO CONTAINER(tapped, size_ml, drinktype_id)
@@ -135,9 +135,49 @@ VALUES ('Desinfektion', 3, 1, NOW());
 
 
 
+-- für Falge
+/*
+create table CONTACT
+(
+    CONTACT_ID int auto_increment,
+    NAME       VARCHAR(45) not null,
+    MAIL       varchar(70) not null,
+    TELEPHONE  varchar(20) null,
+    constraint CONTACT_pk
+        primary key (CONTACT_ID)
+);
+
+alter table MAINTENANCE_LOG
+    add CONTACT_ID int null;
 
 
+alter table MAINTENANCE_LOG
+    add constraint MAINTENANCE_LOG_CONTACT_CONTACT_ID_fk
+        foreign key (CONTACT_ID) references CONTACT (CONTACT_ID);
 
 
+INSERT INTO CONTACT(NAME, MAIL, TELEPHONE)
+VALUES ('Unteregger', 'stephan.dopler@edu.htl-klu.at', '06761234567');
+
+INSERT INTO CONTACT(NAME, MAIL, TELEPHONE)
+VALUES ('Brau-Union', 'hubert.lercher@edu.htl-klu.at', '06761234567');
+
+INSERT INTO CONTACT(NAME, MAIL, TELEPHONE)
+VALUES ('Zapfdoktor', 'daniel.falgenhauer@edu.htl-klu.at', '06761234567');
+
+INSERT INTO USER(SURNAME, FIRSTNAME, MAIL)
+VALUES ('Mustermann', 'Maximilian', 'maximilian.mustermann@edu.htl-klu.at');
+
+INSERT INTO USER(SURNAME, FIRSTNAME, mail)
+VALUES ('Musterfrau', 'Tanja', 'tanja.musterfrau@edu.htl-klu.at');
+
+INSERT INTO USER(SURNAME, FIRSTNAME, mail)
+VALUES ('Müller', 'Thomas', 'thomas.mueller@edu.htl-klu.at');
+
+INSERT INTO USER(SURNAME, FIRSTNAME, mail)
+VALUES ('Kargl', 'Henry', 'henry.kargl@edu.htl-klu.at');
+
+
+*/
 
 
