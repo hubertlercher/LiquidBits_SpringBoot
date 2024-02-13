@@ -158,6 +158,7 @@ public class StatisticsRestController {
         for(User user : users) {
             UserStatisticsDTO usDTO = new UserStatisticsDTO();
 
+            usDTO.setUserId(user.getUserId());
             usDTO.setSurname(user.getSurname());
             usDTO.setFirstname(user.getFirstname());
             usDTO.setImage(user.getImage());

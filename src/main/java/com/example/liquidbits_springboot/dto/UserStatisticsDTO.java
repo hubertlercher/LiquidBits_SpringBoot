@@ -3,6 +3,7 @@ package com.example.liquidbits_springboot.dto;
 public class UserStatisticsDTO {
 
     //region Properties
+    private int userId;
     private String surname;
     private String firstname;
     private String image;
@@ -43,7 +44,15 @@ public class UserStatisticsDTO {
         this.firstname = firstname;
     }
 
-//endregion Getter and Setter
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    //endregion Getter and Setter
 
 
 }
