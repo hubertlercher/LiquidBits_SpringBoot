@@ -93,4 +93,46 @@ public class UserRestController {
     }
 
 
+    @DeleteMapping(value = "{userId}")
+    public ResponseEntity<?> deleteByIdPV1(@PathVariable Integer userId) {
+
+        logger.info(LogUtils.info(className, "deleteByIdPV1", String.format("(%s)", userId)));
+
+        boolean error = false;
+        String errorMessage = "";
+        User user = null;
+        ResponseEntity<?> result;
+
+        Optional<User> optUser = userRepository.findById(userId);
+        if (!error) {
+            if (optUser.isPresent()) {
+                user = optUser.get();
+            } else {
+                error = true;
+                errorMessage = String.format("User mit der ID %d nicht gefunden", userId);
+            }
+        }
+
+        if (!error) {
+            try {
+                userRepository.deleteById(userId);
+            } catch (Exception e) {
+                error = true;
+                errorMessage = e.toString();
+            }
+        }
+
+        if (!error) {
+            result = new ResponseEntity<User>(user, HttpStatus.OK);
+        } else {
+            result = new ResponseEntity<>(errorMessage, HttpStatus.OK);
+        }
+        return result;
+    }
+
+
+
+
+
+
 }
