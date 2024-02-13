@@ -41,7 +41,7 @@ public class MaintenanceLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CONTACT_ID")
-    @JsonIgnoreProperties({"name", "mail", "telephone"})
+    @JsonIgnoreProperties({"contactId", "mail", "telephone"})
     private Contact contact;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")

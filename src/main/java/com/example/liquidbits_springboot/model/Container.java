@@ -153,7 +153,6 @@ public class Container implements Serializable {
 
         level = (container.getSizeMl() - dispensed);
 
-        // toDo Prozent
         double percent = Math.round(level / (container.getSizeMl() / 100));
 
         return percent;
@@ -163,8 +162,6 @@ public class Container implements Serializable {
     public static String setStatusInDTO(Container container) {
         return container.status;
     }
-
-
 
     //endregion Methods
 

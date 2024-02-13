@@ -47,7 +47,7 @@ public class DrinkTypeRestController {
     }
 
     @GetMapping(value = "")
-    public ResponseEntity<?> getDrinkTypes() {
+    public ResponseEntity<?> getAll() {
         logger.info(LogUtils.info(className, "getDrinkTypes"));
 
         ResponseEntity<?> result;
