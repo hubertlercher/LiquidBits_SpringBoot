@@ -222,29 +222,28 @@ INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMEST
 VALUES(300,3,3,1,3, '2024-01-19 18:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES(300,3,3,1,1, '2024-01-14 18:15:00');
+VALUES(300,3,3,1,5, '2024-01-14 18:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES(500,3,3,1,1, '2024-01-16 18:15:00');
+VALUES(500,3,3,1,5, '2024-01-16 18:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES (125, 3,3,1,2, '2024-01-30 19:15:00');
+VALUES (125, 3,3,1,6, '2024-01-30 19:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES (250, 3,3,1,3, '2024-01-28 19:15:00');
+VALUES (250, 3,3,1,7, '2024-01-28 19:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES(300,3,3,1,3, '2023-01-27 19:15:00');
+VALUES(300,3,3,1,9, '2023-01-27 19:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES(300,3,3,1,1, '2024-01-11 19:15:00');
+VALUES(300,3,3,1,8, '2024-01-11 19:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES(500,3,3,1,1, '2024-02-19 19:15:00');
-
-
+VALUES(500,3,3,1,8, '2024-02-19 19:15:00');
 
 
 */
+
 
 
