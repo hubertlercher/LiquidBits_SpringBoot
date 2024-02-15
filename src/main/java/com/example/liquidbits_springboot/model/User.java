@@ -43,7 +43,7 @@ public class User implements Serializable {
     private int age;
 
     @Column(name = "SEX")
-    private int sex;
+    private char sex;
 
     //region Constructor
 
@@ -115,11 +115,11 @@ public class User implements Serializable {
         this.age = age;
     }
 
-    public int getSex() {
+    public char getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(char sex) {
         this.sex = sex;
     }
 
