@@ -39,6 +39,12 @@ public class User implements Serializable {
     @Column(name = "IMAGE")
     private String image;
 
+    @Column(name = "AGE")
+    private int age;
+
+    @Column(name = "SEX")
+    private int sex;
+
     //region Constructor
 
     public User() {
@@ -100,6 +106,23 @@ public class User implements Serializable {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
     //endregion
 
 
