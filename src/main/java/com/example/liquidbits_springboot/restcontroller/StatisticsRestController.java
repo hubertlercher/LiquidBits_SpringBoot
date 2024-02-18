@@ -123,11 +123,19 @@ public class StatisticsRestController {
                                 d -> d.getTimestamp().toLocalDateTime().getDayOfMonth(),
                                 Collectors.summingDouble(Drink::getAmount)
                         ));
+
+
+
                 // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
                 List<Double> amountsForMonth = new ArrayList<>();
                 for (int i = 0; i < LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()); i++) {
                     amountsForMonth.add(amountsByDay.getOrDefault(i, Double.valueOf(0)));
                 }
+
+                for (Double v : amountsForMonth) {
+                    v = v / 1000;
+                }
+
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setMonthly(amountsForMonth);
 
