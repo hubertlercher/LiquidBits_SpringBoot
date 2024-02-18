@@ -84,7 +84,7 @@ public class StatisticsRestController {
             TimeStatisticsDTO tsDTO = new TimeStatisticsDTO();
             DrinkStatisticsDTO dsDTO = new DrinkStatisticsDTO();
             tsDTO.setName(drinkType.getName());
-            tsDTO.setDate(LocalDate.of(2023,12,19));
+            tsDTO.setDate(LocalDate.of(2024,02,18));
             dsDTO.setName(drinkType.getName());
 
             // ... Daten auswerten - StatisticsTime
@@ -94,21 +94,23 @@ public class StatisticsRestController {
                 //täglich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
                 Map<Integer, Double> amountsByHour = drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2023,12,19).getDayOfMonth())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2024,02,18).getDayOfMonth())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getHours(),
                                 Collectors.summingDouble(Drink::getAmount)
                         ));
-
-                for (Double value : amountsByHour.values()) {
-                    value = value / 1000;
-                }
 
                 // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
                 List<Double> amountsForDay = new ArrayList<>();
                 for (int i = 0; i < 24; i++) {
                     amountsForDay.add(amountsByHour.getOrDefault(i, Double.valueOf(0)));
                 }
+
+                //Werte fürs Frontend in Liter umrechnen
+                for (int i = 0; i < amountsForDay.size(); i++) {
+                    amountsForDay.set(i, amountsForDay.get(i) / 1000.0);
+                }
+
 
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setDaily(amountsForDay);
@@ -123,7 +125,7 @@ public class StatisticsRestController {
                 //monatlich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
                 Map<Integer, Double> amountsByDay = drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2023,12,19).getMonthValue())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2024,02,18).getMonthValue())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().toLocalDateTime().getDayOfMonth(),
                                 Collectors.summingDouble(Drink::getAmount)
@@ -139,14 +141,17 @@ public class StatisticsRestController {
                     amountsForMonth.add(amountsByDay.getOrDefault(i, Double.valueOf(0)));
                 }
 
-
+                //Werte fürs Frontend in Liter umrechnen
+                for (int i = 0; i < amountsForMonth.size(); i++) {
+                    amountsForMonth.set(i, amountsForMonth.get(i) / 1000.0);
+                }
 
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setMonthly(amountsForMonth);
 
                 //jährlich
                 Map<Integer, Double> amountsByMonth = drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2023,12,19).getYear())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2024,02,18).getYear())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getMonth(),
                                 Collectors.summingDouble(Drink::getAmount)
@@ -160,6 +165,11 @@ public class StatisticsRestController {
                 List<Double> amountsForYear = new ArrayList<>();
                 for (int i = 0; i < 12; i++) {
                     amountsForYear.add(amountsByMonth.getOrDefault(i, Double.valueOf(0)));
+                }
+
+                //Werte fürs Frontend in Liter umrechnen
+                for (int i = 0; i < amountsForYear.size(); i++) {
+                    amountsForYear.set(i, amountsForYear.get(i) / 1000.0);
                 }
 
                 // Setzen der Liste in das tsDTO-Objekt
