@@ -25,7 +25,7 @@ public class Container implements Serializable {
 
 
     @Column(name = "TAPPED")
-    private Date tapped;
+    private LocalDateTime tapped;
 
 
     @Column(name = "SIZE_ML")
@@ -90,11 +90,11 @@ public class Container implements Serializable {
         this.containerId = containerId;
     }
 
-    public Date getTapped() {
+    public LocalDateTime getTapped() {
         return tapped;
     }
 
-    public void setTapped(Date tapped) {
+    public void setTapped(LocalDateTime tapped) {
         this.tapped = tapped;
     }
 

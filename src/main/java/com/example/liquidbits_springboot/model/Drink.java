@@ -1,6 +1,7 @@
 package com.example.liquidbits_springboot.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -56,13 +57,34 @@ public class Drink implements Serializable {
     @JsonProperty("user")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID")
-    @JsonIgnoreProperties({"name", "mail", "image"})
+    @JsonIgnoreProperties({"surname", "firstname", "age", "sex", "mail", "image"})
     private User user;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     @NotNull
     @Column(name = "TIMESTAMP")
     private Timestamp timestamp;
 
     //endregion
+
+    //region Constructor
+
+    public Drink(double amount, DrinkType drinkType, Container container, Device device, User user, Timestamp timestamp) {
+        this.amount = amount;
+        this.drinkType = drinkType;
+        this.container = container;
+        this.device = device;
+        this.user = user;
+        this.timestamp = timestamp;
+    }
+
+    public Drink() {
+
+    }
+
+
+    //endregion Constructor
+
+
 
     //region Getter and Setter
 
