@@ -99,6 +99,11 @@ public class StatisticsRestController {
                                 d -> d.getTimestamp().getHours(),
                                 Collectors.summingDouble(Drink::getAmount)
                         ));
+
+                for (Double value : amountsByHour.values()) {
+                    value = value / 1000;
+                }
+
                 // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
                 List<Double> amountsForDay = new ArrayList<>();
                 for (int i = 0; i < 24; i++) {
@@ -124,7 +129,9 @@ public class StatisticsRestController {
                                 Collectors.summingDouble(Drink::getAmount)
                         ));
 
-
+                for (Double value : amountsByDay.values()) {
+                    value = value / 1000;
+                }
 
                 // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
                 List<Double> amountsForMonth = new ArrayList<>();
@@ -132,9 +139,7 @@ public class StatisticsRestController {
                     amountsForMonth.add(amountsByDay.getOrDefault(i, Double.valueOf(0)));
                 }
 
-                for (Double v : amountsForMonth) {
-                    v = v / 1000;
-                }
+
 
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setMonthly(amountsForMonth);
@@ -146,6 +151,11 @@ public class StatisticsRestController {
                                 d -> d.getTimestamp().getMonth(),
                                 Collectors.summingDouble(Drink::getAmount)
                         ));
+
+                for (Double value : amountsByMonth.values()) {
+                    value = value / 1000;
+                }
+
                 // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
                 List<Double> amountsForYear = new ArrayList<>();
                 for (int i = 0; i < 12; i++) {
