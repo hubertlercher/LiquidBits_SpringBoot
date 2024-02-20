@@ -183,14 +183,23 @@ public class Drink implements Serializable {
     public char isDrinkSizeSOrL() {
         char size = 'Z';
 
-        if(this.getDrinkType().getDrinkSizeS() == this.getAmount()) {
-            size = 'S';
-        } else if (this.getDrinkType().getDrinkSizeL() == this.getAmount()) {
-            size = 'L';
+        switch (drinkType.getDrinkTypeId()) {
+
+            case 1, 3: if(this.getAmount() <= 499) {
+                size = 'S';
+            } else if (this.getAmount() >= 500) {
+                size = 'L';
+            } break;
+
+            case 2: if(this.getAmount() <= 249) {
+                size = 'S';
+            } else if (this.getAmount() >= 250) {
+                size = 'L';
+            } break;
         }
+
         return size;
     }
-
 
     //endregion
 
