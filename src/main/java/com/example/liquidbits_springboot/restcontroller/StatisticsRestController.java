@@ -111,9 +111,21 @@ public class StatisticsRestController {
                     amountsForDay.set(i, amountsForDay.get(i) / 1000.0);
                 }
 
+                //Auswertung verschiedener Getränkegrößen
+                Map<Character, Long> drinksPerSizeDaily = drinkType.getDrinks()
+                        .stream()
+                                .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2024,02,18).getDayOfMonth())
+                                        .collect(Collectors.groupingBy(
+                                                d -> d.isDrinkSizeSOrL(),
+                                                Collectors.counting()
+                                        ));
+
+
 
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setDaily(amountsForDay);
+                tsDTO.setSizesDaily(drinksPerSizeDaily);
+                //tsDTO.setSizesDaily(drinksPerSizeList);
 
                 //DrinkStatistics Wochen definieren
 
@@ -146,8 +158,21 @@ public class StatisticsRestController {
                     amountsForMonth.set(i, amountsForMonth.get(i) / 1000.0);
                 }
 
+                //Auswertung verschiedener Getränkegrößen
+                Map<Character, Long> drinksPerSizeMonthly = drinkType.getDrinks()
+                        .stream()
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2024,02,18).getMonthValue())
+                        .collect(Collectors.groupingBy(
+                                d -> d.isDrinkSizeSOrL(),
+                                Collectors.counting()
+                        ));
+
+
+
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setMonthly(amountsForMonth);
+                tsDTO.setSizesMonthly(drinksPerSizeMonthly);
+
 
                 //jährlich
                 Map<Integer, Double> amountsByMonth = drinkType.getDrinks().stream()
@@ -172,8 +197,21 @@ public class StatisticsRestController {
                     amountsForYear.set(i, amountsForYear.get(i) / 1000.0);
                 }
 
+                //Auswertung verschiedener Getränkegrößen
+                Map<Character, Long> drinksPerSizeAnnually = drinkType.getDrinks()
+                        .stream()
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2024,02,18).getYear())
+                        .collect(Collectors.groupingBy(
+                                d -> d.isDrinkSizeSOrL(),
+                                Collectors.counting()
+                        ));
+
+
+
                 // Setzen der Liste in das tsDTO-Objekt
                 tsDTO.setAnnually(amountsForYear);
+                tsDTO.setSizesAnnually(drinksPerSizeAnnually);
+
 
             }
 

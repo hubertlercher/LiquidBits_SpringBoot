@@ -177,4 +177,22 @@ public class Drink implements Serializable {
     }
 
     //endregion
+
+    //region Methods
+
+    public char isDrinkSizeSOrL() {
+        char size = 'Z';
+
+        if(this.getDrinkType().getDrinkSizeS() == this.getAmount()) {
+            size = 'S';
+        } else if (this.getDrinkType().getDrinkSizeL() == this.getAmount()) {
+            size = 'L';
+        }
+        return size;
+    }
+
+
+    //endregion
+
+
 }
