@@ -57,8 +57,6 @@ public class StatisticsRestController {
         List<DrinkType> drinkTypes = drinkTypeRepository.findAll();
 
 
-
-
         for (Container container : containersTapped) {
 
             ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
@@ -79,12 +77,12 @@ public class StatisticsRestController {
         }
 
 
-        for(DrinkType drinkType : drinkTypes) {
+        for (DrinkType drinkType : drinkTypes) {
 
             TimeStatisticsDTO tsDTO = new TimeStatisticsDTO();
             DrinkStatisticsDTO dsDTO = new DrinkStatisticsDTO();
             tsDTO.setName(drinkType.getName());
-            tsDTO.setDate(LocalDate.of(2024,02,18));
+            tsDTO.setDate(LocalDate.of(2024, 02, 18));
             dsDTO.setName(drinkType.getName());
 
             // ... Daten auswerten - StatisticsTime
@@ -94,7 +92,7 @@ public class StatisticsRestController {
                 //täglich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
                 Map<Integer, Double> amountsByHour = drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2024,02,18).getDayOfMonth())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2024, 02, 18).getDayOfMonth())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getHours(),
                                 Collectors.summingDouble(Drink::getAmount)
@@ -114,12 +112,11 @@ public class StatisticsRestController {
                 //Auswertung verschiedener Getränkegrößen
                 Map<Character, Long> drinksPerSizeDaily = drinkType.getDrinks()
                         .stream()
-                                .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2024,02,18).getDayOfMonth())
-                                        .collect(Collectors.groupingBy(
-                                                d -> d.isDrinkSizeSOrL(),
-                                                Collectors.counting()
-                                        ));
-
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.of(2024, 02, 18).getDayOfMonth())
+                        .collect(Collectors.groupingBy(
+                                d -> d.isDrinkSizeSOrL(),
+                                Collectors.counting()
+                        ));
 
 
                 // Setzen der Liste in das tsDTO-Objekt
@@ -137,7 +134,7 @@ public class StatisticsRestController {
                 //monatlich
                 //Gruppierung der Drinks nach Stunden und Summierung der Mengen
                 Map<Integer, Double> amountsByDay = drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2024,02,18).getMonthValue())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2024, 02, 18).getMonthValue())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().toLocalDateTime().getDayOfMonth(),
                                 Collectors.summingDouble(Drink::getAmount)
@@ -161,12 +158,11 @@ public class StatisticsRestController {
                 //Auswertung verschiedener Getränkegrößen
                 Map<Character, Long> drinksPerSizeMonthly = drinkType.getDrinks()
                         .stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2024,02,18).getMonthValue())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.of(2024, 02, 18).getMonthValue())
                         .collect(Collectors.groupingBy(
                                 d -> d.isDrinkSizeSOrL(),
                                 Collectors.counting()
                         ));
-
 
 
                 // Setzen der Liste in das tsDTO-Objekt
@@ -176,7 +172,7 @@ public class StatisticsRestController {
 
                 //jährlich
                 Map<Integer, Double> amountsByMonth = drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2024,02,18).getYear())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2024, 02, 18).getYear())
                         .collect(Collectors.groupingBy(
                                 d -> d.getTimestamp().getMonth(),
                                 Collectors.summingDouble(Drink::getAmount)
@@ -200,12 +196,11 @@ public class StatisticsRestController {
                 //Auswertung verschiedener Getränkegrößen
                 Map<Character, Long> drinksPerSizeAnnually = drinkType.getDrinks()
                         .stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2024,02,18).getYear())
+                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.of(2024, 02, 18).getYear())
                         .collect(Collectors.groupingBy(
                                 d -> d.isDrinkSizeSOrL(),
                                 Collectors.counting()
                         ));
-
 
 
                 // Setzen der Liste in das tsDTO-Objekt
@@ -221,7 +216,7 @@ public class StatisticsRestController {
 
         List<User> users = userRepository.findAll();
 
-        for(User user : users) {
+        for (User user : users) {
             UserStatisticsDTO usDTO = new UserStatisticsDTO();
 
             usDTO.setUserId(user.getUserId());
@@ -229,7 +224,7 @@ public class StatisticsRestController {
             usDTO.setFirstname(user.getFirstname());
             usDTO.setImage(user.getImage());
 
-            for(Drink drink : user.getDrinks()) {
+            for (Drink drink : user.getDrinks()) {
 
                 double drinksServedL = user.getDrinks()
                         .stream()
@@ -237,7 +232,7 @@ public class StatisticsRestController {
                         .mapToDouble(drinks -> drinks.getAmount())
                         .sum();
 
-                drinksServedL = drinksServedL/1000;                                 //Umrechnung in Liter
+                drinksServedL = drinksServedL / 1000;                                 //Umrechnung in Liter
 
                 drinksServedL = Math.round(drinksServedL * 100.0) / 100.0;          //Runden auf zwei Nachkommastellen
 
@@ -257,16 +252,17 @@ public class StatisticsRestController {
 
         Optional<Container> optionalContainer = containerRepository.findById(drinkTypeId);
 
-        if(optionalContainer.isPresent()) {
+        if (optionalContainer.isPresent()) {
             Container container = optionalContainer.get();
-                csDTO.setName(container.getDrinkType().getName());
-                csDTO.setBarrelLevel(Container.calcBarrelLevel(container));
-                csDTO.setLastMaintenance(container.getDrinkType().getLastMaintenance());
-                csDTO.setNextMaintenance(csDTO.getLastMaintenance().plusMonths(6));
-                csDTO.setLastCleaning(container.getDrinkType().getLastCleaning());
-                csDTO.setDrinkSizeS(container.getDrinkType().getDrinkSizeS());
-                csDTO.setDrinkSizeL(container.getDrinkType().getDrinkSizeL());
-                csDTO.setStatus(Container.setStatusInDTO(container));
+            csDTO.setDrinkTypeId(container.getDrinkType().getDrinkTypeId());
+            csDTO.setName(container.getDrinkType().getName());
+            csDTO.setBarrelLevel(Container.calcBarrelLevel(container));
+            csDTO.setLastMaintenance(container.getDrinkType().getLastMaintenance());
+            csDTO.setNextMaintenance(csDTO.getLastMaintenance().plusMonths(6));
+            csDTO.setLastCleaning(container.getDrinkType().getLastCleaning());
+            csDTO.setDrinkSizeS(container.getDrinkType().getDrinkSizeS());
+            csDTO.setDrinkSizeL(container.getDrinkType().getDrinkSizeL());
+            csDTO.setStatus(Container.setStatusInDTO(container));
         }
 
         return csDTO;
@@ -277,7 +273,7 @@ public class StatisticsRestController {
     public void updateDrinkSizesIntensity(@PathVariable String drinkTypeName,
                                           @RequestParam(name = "S") int drinkSizeS,
                                           @RequestParam(name = "L") int drinkSizeL,
-                                          @RequestParam(name = "intensity", required = false) int intensity) {
+                                          @RequestParam(name = "intensity", required = false) Integer intensity) {
         logger.info(LogUtils.info(className, "updateDrinkSizes"));
         ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
 
@@ -286,11 +282,6 @@ public class StatisticsRestController {
         drinkTypeRepository.updateIntensityByName(drinkTypeName, intensity);
 
     }
-
-
-
-
-
 
 
     @PutMapping(value = "")
@@ -316,7 +307,7 @@ public class StatisticsRestController {
                         .toArray();
 
                 for (int i = 0; i < drinkSizesS.length; i++) {
-                    drinkTypeRepository.updateDrinkSizeSById(i+1, drinkSizesS[i]);
+                    drinkTypeRepository.updateDrinkSizeSById(i + 1, drinkSizesS[i]);
                 }
 
 
@@ -326,7 +317,7 @@ public class StatisticsRestController {
                         .toArray();
 
                 for (int i = 0; i < drinkSizesL.length; i++) {
-                    drinkTypeRepository.updateDrinkSizeLById(i+1, drinkSizesL[i]);
+                    drinkTypeRepository.updateDrinkSizeLById(i + 1, drinkSizesL[i]);
                 }
 
 
@@ -387,11 +378,6 @@ public class StatisticsRestController {
         return result;
 
     }*/
-
-
-
-
-
 
 
 }

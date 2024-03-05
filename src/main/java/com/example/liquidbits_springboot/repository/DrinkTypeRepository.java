@@ -27,7 +27,7 @@ public interface DrinkTypeRepository extends JpaRepository<DrinkType, Integer> {
     @Transactional
     @Modifying
     @Query("UPDATE DrinkType d SET d.intensity = :newIntensity WHERE d.name = :drinkTypeName")
-    void updateIntensityByName(String drinkTypeName, int newIntensity);
+    void updateIntensityByName(String drinkTypeName, Integer newIntensity);
 
 
 

@@ -29,6 +29,18 @@ public class DrinkTypeRestController {
     DrinkTypeRepository drinkTypeRepository;
 
     // http://localhost:8081/drinkTypes
+    @GetMapping(value = "")
+    public ResponseEntity<?> getAll() {
+        logger.info(LogUtils.info(className, "getDrinkTypes"));
+
+        ResponseEntity<?> result;
+        List<DrinkType> drinkTypes = drinkTypeRepository.findAll();
+
+        result = new ResponseEntity<List<DrinkType>>(drinkTypes, HttpStatus.OK);
+
+        return result;
+    }
+
     @GetMapping(value = "{drinkTypeId}")
     public ResponseEntity<?> getByIdPV(@PathVariable Integer drinkTypeId) {
         logger.info(LogUtils.info(className, "getByIdPV", String.format("(%d)", drinkTypeId)));
@@ -43,18 +55,6 @@ public class DrinkTypeRestController {
             result = new ResponseEntity<>(String.format("DrinkType mit der Id = %d nicht vorhanden", drinkTypeId),
                     HttpStatus.NO_CONTENT);
         }
-        return result;
-    }
-
-    @GetMapping(value = "")
-    public ResponseEntity<?> getAll() {
-        logger.info(LogUtils.info(className, "getDrinkTypes"));
-
-        ResponseEntity<?> result;
-        List<DrinkType> drinkTypes = drinkTypeRepository.findAll();
-
-        result = new ResponseEntity<List<DrinkType>>(drinkTypes, HttpStatus.OK);
-
         return result;
     }
 
