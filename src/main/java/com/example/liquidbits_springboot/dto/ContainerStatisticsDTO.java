@@ -20,7 +20,7 @@ public class ContainerStatisticsDTO {
     private LocalDate nextMaintenance;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate lastCleaning;
-    private int intensity;
+    private Integer intensity;
 
     public String getName() {
         return name;
@@ -86,11 +86,11 @@ public class ContainerStatisticsDTO {
         this.drinkTypeId = drinkTypeId;
     }
 
-    public int getIntensity() {
+    public Integer getIntensity() {
         return intensity;
     }
 
-    public void setIntensity(int intensity) {
+    public void setIntensity(Integer intensity) {
         this.intensity = intensity;
     }
 

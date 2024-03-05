@@ -273,8 +273,11 @@ public class StatisticsRestController {
     }
 
 
-    @PutMapping(value = "/drinkStatisticsBarrel/{drinkTypeName}/{drinkSizeS}/{drinkSizeL}/{intensity}")
-    public void updateDrinkSizesIntensity(@PathVariable String drinkTypeName, @PathVariable int drinkSizeS, @PathVariable int drinkSizeL, @PathVariable int intensity) {
+    @PutMapping(value = "/drinkStatisticsBarrel/{drinkTypeName}")
+    public void updateDrinkSizesIntensity(@PathVariable String drinkTypeName,
+                                          @RequestParam(name = "S") int drinkSizeS,
+                                          @RequestParam(name = "L") int drinkSizeL,
+                                          @RequestParam(name = "intensity", required = false) int intensity) {
         logger.info(LogUtils.info(className, "updateDrinkSizes"));
         ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
 
