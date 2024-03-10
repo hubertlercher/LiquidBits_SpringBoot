@@ -8,9 +8,9 @@ public class LogUtils
     {
         String result;
         if (parameters == null || parameters.isEmpty())
-            result = String.format("HTL -> %s -> %s", className, methodName);
+            result = String.format("liquidBits -> %s -> %s", className, methodName);
         else
-            result = String.format("HTL -> %s -> %s -> %s", className, methodName, parameters);
+            result = String.format("liquidBits -> %s -> %s -> %s", className, methodName, parameters);
         return result;
     }
 
