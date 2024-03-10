@@ -41,7 +41,10 @@ public class DrinkRestController {
         else {
             result = new ResponseEntity<>(String.format("Getränkeausschank mit der Id = %d nicht vorhanden", drinkId),
                     HttpStatus.NO_CONTENT);
+            logger.info(LogUtils.info(className, "getByIdPV",
+                    String.format("Getränkeausschank mit der Id = %d nicht vorhanden", drinkId)));
         }
+
         return result;
     }
 

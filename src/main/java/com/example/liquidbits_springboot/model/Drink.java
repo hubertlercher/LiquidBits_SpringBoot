@@ -59,7 +59,7 @@ public class Drink implements Serializable {
     @JoinColumn(name = "USER_ID")
     @JsonIgnoreProperties({"surname", "firstname", "age", "sex", "mail", "image"})
     private User user;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull
     @Column(name = "TIMESTAMP")
     private Timestamp timestamp;
