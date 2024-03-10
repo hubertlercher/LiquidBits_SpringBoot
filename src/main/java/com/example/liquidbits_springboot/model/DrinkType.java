@@ -1,6 +1,7 @@
 package com.example.liquidbits_springboot.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -60,10 +61,11 @@ public class DrinkType implements Serializable {
     @Column(name = "DRINKSIZE_L")
     private int drinkSizeL;
 
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "LAST_MAINTENANCE")
     private LocalDate lastMaintenance;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "LAST_CLEANING")
     private LocalDate lastCleaning;
     //endregion
