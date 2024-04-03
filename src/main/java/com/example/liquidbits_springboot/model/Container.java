@@ -152,11 +152,8 @@ public class Container implements Serializable {
                 .sum();
 
         level = (container.getSizeMl() - dispensed);
-
         double percent = Math.round(level / (container.getSizeMl() / 100));
-
         return percent;
-
     }
 
     public static String setStatusInDTO(Container container) {

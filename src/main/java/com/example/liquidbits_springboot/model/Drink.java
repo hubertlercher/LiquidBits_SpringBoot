@@ -23,16 +23,11 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Drink implements Serializable {
 
-    //region static properties
-
-    //endregion
-
     //region Properties
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "DRINK_ID")
     private int drinkId;
-
     @Column(name = "AMOUNT")
     private double amount;
     @NotNull
@@ -67,8 +62,8 @@ public class Drink implements Serializable {
     //endregion
 
     //region Constructor
-
-    public Drink(double amount, DrinkType drinkType, Container container, Device device, User user, Timestamp timestamp) {
+    public Drink(double amount, DrinkType drinkType, Container container,
+                 Device device, User user, Timestamp timestamp) {
         this.amount = amount;
         this.drinkType = drinkType;
         this.container = container;
@@ -78,28 +73,19 @@ public class Drink implements Serializable {
     }
 
     public Drink() {
-
     }
-
-
     //endregion Constructor
 
-
-
     //region Getter and Setter
-
     public int getDrinkId() {
         return drinkId;
     }
-
     public void setDrinkId(int drinkId) {
         this.drinkId = drinkId;
     }
-
     public double getAmount() {
         return amount;
     }
-
     public void setAmount(double amount) {
         this.amount = amount;
     }
@@ -179,7 +165,6 @@ public class Drink implements Serializable {
     //endregion
 
     //region Methods
-
     public char isDrinkSizeSOrL() {
         char size = 'Z';
 
@@ -200,7 +185,6 @@ public class Drink implements Serializable {
 
         return size;
     }
-
     //endregion
 
 

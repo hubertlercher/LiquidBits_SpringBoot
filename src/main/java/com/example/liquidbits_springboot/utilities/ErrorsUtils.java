@@ -1,4 +1,4 @@
-package com.example.liquidbits_springboot.api;
+package com.example.liquidbits_springboot.utilities;
 
 import org.springframework.web.servlet.ModelAndView;
 
@@ -8,7 +8,6 @@ public class ErrorsUtils
     {
         return show(String.format("Für die Id = %d (von %s) sind keine Daten vorhanden!", id, table));
     }
-
     public static ModelAndView show(String message)
     {
         ModelAndView mv = new ModelAndView();
@@ -18,7 +17,6 @@ public class ErrorsUtils
 
         return mv;
     }
-
     public static String getErrorMessage(Exception e)
     {
         return e.getCause().getCause().getLocalizedMessage();

@@ -245,5 +245,21 @@ VALUES(500,3,3,1,8, '2024-02-19 19:15:00');
 
 */
 
+SELECT @@global.time_zone;
+
+SHOW GRANTS FOR 'liquidbits'@'%';
+
+GRANT SUPER ON *.* TO 'liquidbits'@'192.168.51.70';
+
+GRANT SUPER ON *.* TO 'liquidbits'@'192.168.51.70' IDENTIFIED BY 'liquidbits';
+
+
+
+GRANT ALL PRIVILEGES ON *.* TO 'liquidbits'@'192.168.51.70' WITH GRANT OPTION;
+
+SET GLOBAL time_zone = 'Europe/Berlin';
+
+
+
 
 

@@ -1,7 +1,7 @@
 package com.example.liquidbits_springboot.restcontroller;
 
-import com.example.liquidbits_springboot.api.ErrorsUtils;
-import com.example.liquidbits_springboot.api.LogUtils;
+import com.example.liquidbits_springboot.utilities.ErrorsUtils;
+import com.example.liquidbits_springboot.utilities.LogUtils;
 import com.example.liquidbits_springboot.dto.*;
 import com.example.liquidbits_springboot.model.Container;
 import com.example.liquidbits_springboot.model.Drink;
@@ -37,25 +37,19 @@ public class StatisticsRestController {
 
     @Autowired
     DrinkRepository drinkRepository;
-
     @Autowired
     ContainerRepository containerRepository;
-
     @Autowired
     DrinkTypeRepository drinkTypeRepository;
-
     @Autowired
     UserRepository userRepository;
 
     @GetMapping(value = "")
     public StatisticsDTO getStats() {
         logger.info(LogUtils.info(className, "getStats"));
-
         StatisticsDTO stats = new StatisticsDTO();
-
         List<Container> containersTapped = containerRepository.findContainersByTappedIsNotNullAndAndUntappedIsNull();
         List<DrinkType> drinkTypes = drinkTypeRepository.findAll();
-
 
         for (Container container : containersTapped) {
 
@@ -72,176 +66,156 @@ public class StatisticsRestController {
             csDTO.setStatus(Container.setStatusInDTO(container));
             csDTO.setIntensity(container.getDrinkType().getIntensity());
             stats.getDrinkStatisticsBarrel().add(csDTO);
-
-
         }
 
 
         for (DrinkType drinkType : drinkTypes) {
-
             TimeStatisticsDTO tsDTO = new TimeStatisticsDTO();
-            DrinkStatisticsDTO dsDTO = new DrinkStatisticsDTO();
             tsDTO.setName(drinkType.getName());
-            tsDTO.setDate(LocalDate.of(2024, 02, 18));
-            dsDTO.setName(drinkType.getName());
-
+            tsDTO.setDate(LocalDate.now());
             // ... Daten auswerten - StatisticsTime
             // ... all drinks from container
-            for (Drink drink : drinkType.getDrinks()) {
+            //Stunden pro Tag
+            //Gruppierung der Drinks nach Stunden und Summierung der Mengen
+            Map<Integer, Double> amountsByHour = drinkType.getDrinks().stream()
+                    .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth()
+                            == LocalDate.now().getDayOfMonth())
+                    .collect(Collectors.groupingBy(
+                            d -> d.getTimestamp().getHours(),
+                            Collectors.summingDouble(Drink::getAmount)
+                    ));
 
-                //Stunden pro Tag
-                //Gruppierung der Drinks nach Stunden und Summierung der Mengen
-                Map<Integer, Double> amountsByHour = drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.now().getDayOfMonth())
-                        .collect(Collectors.groupingBy(
-                                d -> d.getTimestamp().getHours(),
-                                Collectors.summingDouble(Drink::getAmount)
-                        ));
-
-                // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
-                List<Double> amountsForDay = new ArrayList<>();
-                for (int i = 0; i < 24; i++) {
-                    amountsForDay.add(amountsByHour.getOrDefault(i, Double.valueOf(0)));
-                }
-
-                //Werte fürs Frontend in Liter umrechnen
-                for (int i = 0; i < amountsForDay.size(); i++) {
-                    amountsForDay.set(i, amountsForDay.get(i) / 1000.0);
-                }
-
-                //Auswertung verschiedener Getränkegrößen
-                Map<Character, Long> drinksPerSizeDaily = drinkType.getDrinks()
-                        .stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.now().getDayOfMonth())
-                        .collect(Collectors.groupingBy(
-                                d -> d.isDrinkSizeSOrL(),
-                                Collectors.counting()
-                        ));
-
-
-                // Setzen der Liste in das tsDTO-Objekt
-                tsDTO.setDaily(amountsForDay);
-                tsDTO.setSizesDaily(drinksPerSizeDaily);
-                //tsDTO.setSizesDaily(drinksPerSizeList);
-
-                //DrinkStatistics Wochen definieren
-
-                //DrinkStatistics Berechnung wöchentlich
-                /*drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().isAfter(startOfWeek) && d.getTimestamp().toLocalDateTime().isBefore(endOfWeek))
-                        .count();*/
-
-                //Tage pro Monat
-                //Gruppierung der Drinks nach Stunden und Summierung der Mengen
-                Map<Integer, Double> amountsByDay = drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.now().getMonthValue())
-                        .collect(Collectors.groupingBy(
-                                d -> d.getTimestamp().toLocalDateTime().getDayOfMonth(),
-                                Collectors.summingDouble(Drink::getAmount)
-                        ));
-
-                for (Double value : amountsByDay.values()) {
-                    value = value / 1000;
-                }
-
-                // Erzeugen einer Liste mit Werten, auch für fehlende Tage mit dem Wert 0
-                List<Double> amountsForMonth = new ArrayList<>();
-                for (int i = 0; i < LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()); i++) {
-                    amountsForMonth.add(amountsByDay.getOrDefault(i, Double.valueOf(0)));
-                }
-
-                //Werte fürs Frontend in Liter umrechnen
-                for (int i = 0; i < amountsForMonth.size(); i++) {
-                    amountsForMonth.set(i, amountsForMonth.get(i) / 1000.0);
-                }
-
-                //Auswertung verschiedener Getränkegrößen
-                Map<Character, Long> drinksPerSizeMonthly = drinkType.getDrinks()
-                        .stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.now().getMonthValue())
-                        .collect(Collectors.groupingBy(
-                                d -> d.isDrinkSizeSOrL(),
-                                Collectors.counting()
-                        ));
-
-
-                // Setzen der Liste in das tsDTO-Objekt
-                tsDTO.setMonthly(amountsForMonth);
-                tsDTO.setSizesMonthly(drinksPerSizeMonthly);
-
-
-                //Monate pro Jahr
-                Map<Integer, Double> amountsByMonth = drinkType.getDrinks().stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.now().getYear())
-                        .collect(Collectors.groupingBy(
-                                d -> d.getTimestamp().getMonth(),
-                                Collectors.summingDouble(Drink::getAmount)
-                        ));
-
-                for (Double value : amountsByMonth.values()) {
-                    value = value / 1000;
-                }
-
-                // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
-                List<Double> amountsForYear = new ArrayList<>();
-                for (int i = 0; i < 12; i++) {
-                    amountsForYear.add(amountsByMonth.getOrDefault(i, Double.valueOf(0)));
-                }
-
-                //Werte fürs Frontend in Liter umrechnen
-                for (int i = 0; i < amountsForYear.size(); i++) {
-                    amountsForYear.set(i, amountsForYear.get(i) / 1000.0);
-                }
-
-                //Auswertung verschiedener Getränkegrößen
-                Map<Character, Long> drinksPerSizeAnnually = drinkType.getDrinks()
-                        .stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.now().getYear())
-                        .collect(Collectors.groupingBy(
-                                d -> d.isDrinkSizeSOrL(),
-                                Collectors.counting()
-                        ));
-
-
-                // Setzen der Liste in das tsDTO-Objekt
-                tsDTO.setAnnually(amountsForYear);
-                tsDTO.setSizesAnnually(drinksPerSizeAnnually);
-
-
+            // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
+            List<Double> amountsForDay = new ArrayList<>();
+            for (int i = 0; i < 24; i++) {
+                amountsForDay.add(amountsByHour.getOrDefault(i, Double.valueOf(0)));
             }
+
+            //Werte fürs Frontend in Liter umrechnen
+            for (int i = 0; i < amountsForDay.size(); i++) {
+                amountsForDay.set(i, amountsForDay.get(i) / 1000.0);
+            }
+
+            //Auswertung verschiedener Getränkegrößen
+            Map<Character, Long> drinksPerSizeDaily = drinkType.getDrinks()
+                    .stream()
+                    .filter(d -> d.getTimestamp().toLocalDateTime().getDayOfMonth() == LocalDate.now().getDayOfMonth())
+                    .collect(Collectors.groupingBy(
+                            d -> d.isDrinkSizeSOrL(),
+                            Collectors.counting()
+                    ));
+
+
+            // Setzen der Liste in das tsDTO-Objekt
+            tsDTO.setDaily(amountsForDay);
+            tsDTO.setSizesDaily(drinksPerSizeDaily);
+
+
+            //Tage pro Monat
+            //Gruppierung der Drinks nach Stunden und Summierung der Mengen
+            Map<Integer, Double> amountsByDay = drinkType.getDrinks().stream()
+                    .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.now().getMonthValue())
+                    .collect(Collectors.groupingBy(
+                            d -> d.getTimestamp().toLocalDateTime().getDayOfMonth(),
+                            Collectors.summingDouble(Drink::getAmount)
+                    ));
+
+            for (Double value : amountsByDay.values()) {
+                value = value / 1000;
+            }
+
+            // Erzeugen einer Liste mit Werten, auch für fehlende Tage mit dem Wert 0
+            List<Double> amountsForMonth = new ArrayList<>();
+            for (int i = 0; i < LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()); i++) {
+                amountsForMonth.add(amountsByDay.getOrDefault(i + 1, Double.valueOf(0)));
+            }
+
+            //Werte fürs Frontend in Liter umrechnen
+            for (int i = 0; i < amountsForMonth.size(); i++) {
+                amountsForMonth.set(i, amountsForMonth.get(i) / 1000.0);
+            }
+
+            //Auswertung verschiedener Getränkegrößen
+            Map<Character, Long> drinksPerSizeMonthly = drinkType.getDrinks()
+                    .stream()
+                    .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.now().getMonthValue())
+                    .collect(Collectors.groupingBy(
+                            d -> d.isDrinkSizeSOrL(),
+                            Collectors.counting()
+                    ));
+
+
+            // Setzen der Liste in das tsDTO-Objekt
+            tsDTO.setMonthly(amountsForMonth);
+            tsDTO.setSizesMonthly(drinksPerSizeMonthly);
+
+
+            //Monate pro Jahr
+            Map<Integer, Double> amountsByMonth = drinkType.getDrinks().stream()
+                    .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.now().getYear())
+                    .collect(Collectors.groupingBy(
+                            d -> d.getTimestamp().getMonth(),
+                            Collectors.summingDouble(Drink::getAmount)
+                    ));
+
+            for (Double value : amountsByMonth.values()) {
+                value = value / 1000;
+            }
+
+            // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
+            List<Double> amountsForYear = new ArrayList<>();
+            for (int i = 0; i < 12; i++) {
+                amountsForYear.add(amountsByMonth.getOrDefault(i, Double.valueOf(0)));
+            }
+
+            //Werte fürs Frontend in Liter umrechnen
+            for (int i = 0; i < amountsForYear.size(); i++) {
+                amountsForYear.set(i, amountsForYear.get(i) / 1000.0);
+            }
+
+            //Auswertung verschiedener Getränkegrößen
+            Map<Character, Long> drinksPerSizeAnnually = drinkType.getDrinks()
+                    .stream()
+                    .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.now().getYear())
+                    .collect(Collectors.groupingBy(
+                            d -> d.isDrinkSizeSOrL(),
+                            Collectors.counting()
+                    ));
+
+
+            // Setzen der Liste in das tsDTO-Objekt
+            tsDTO.setAnnually(amountsForYear);
+            tsDTO.setSizesAnnually(drinksPerSizeAnnually);
 
             stats.getDrinkStatisticsTime().add(tsDTO);
 
         }
 
-        List<User> users = userRepository.findAll();
 
+        //}
+
+        List<User> users = userRepository.findAll();
         for (User user : users) {
             UserStatisticsDTO usDTO = new UserStatisticsDTO();
-
             usDTO.setUserId(user.getUserId());
             usDTO.setSurname(user.getSurname());
             usDTO.setFirstname(user.getFirstname());
             usDTO.setImage(user.getImage());
 
-            for (Drink drink : user.getDrinks()) {
+            double drinksServedL = user.getDrinks()
+                    .stream()
+                    .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.now().getMonthValue())
+                    .mapToDouble(drinks -> drinks.getAmount())
+                    .sum();
 
-                double drinksServedL = user.getDrinks()
-                        .stream()
-                        .filter(d -> d.getTimestamp().toLocalDateTime().getMonthValue() == LocalDate.now().getMonthValue())
-                        .mapToDouble(drinks -> drinks.getAmount())
-                        .sum();
+            //Umrechnung in Liter
+            drinksServedL = drinksServedL / 1000;
+            //Runden auf zwei Nachkommastellen
+            drinksServedL = Math.round(drinksServedL * 100.0) / 100.0;
+            usDTO.setDrinksServedL(drinksServedL);
 
-                drinksServedL = drinksServedL / 1000;                                 //Umrechnung in Liter
-
-                drinksServedL = Math.round(drinksServedL * 100.0) / 100.0;          //Runden auf zwei Nachkommastellen
-
-                usDTO.setDrinksServedL(drinksServedL);
-            }
             stats.getUserStatistics().add(usDTO);
         }
-
-
         return stats;
     }
 

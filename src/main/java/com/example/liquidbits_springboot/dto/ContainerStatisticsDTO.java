@@ -7,7 +7,6 @@ import jakarta.persistence.JoinColumn;
 import java.time.LocalDate;
 
 public class ContainerStatisticsDTO {
-
     private int drinkTypeId;
     private String name;
     private String status;

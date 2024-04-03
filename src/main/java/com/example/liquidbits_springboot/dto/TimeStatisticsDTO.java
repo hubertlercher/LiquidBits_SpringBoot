@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 public class TimeStatisticsDTO {
-
+    //region Properties
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;

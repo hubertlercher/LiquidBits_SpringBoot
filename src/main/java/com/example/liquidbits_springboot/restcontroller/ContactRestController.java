@@ -1,10 +1,8 @@
 package com.example.liquidbits_springboot.restcontroller;
 
-import com.example.liquidbits_springboot.api.LogUtils;
+import com.example.liquidbits_springboot.utilities.LogUtils;
 import com.example.liquidbits_springboot.model.Contact;
-import com.example.liquidbits_springboot.model.Container;
 import com.example.liquidbits_springboot.repository.ContactRepository;
-import com.example.liquidbits_springboot.repository.ContainerRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController

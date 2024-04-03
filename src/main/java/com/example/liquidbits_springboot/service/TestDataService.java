@@ -1,23 +1,17 @@
 package com.example.liquidbits_springboot.service;
 
-import com.example.liquidbits_springboot.api.LogUtils;
+import com.example.liquidbits_springboot.utilities.LogUtils;
 import com.example.liquidbits_springboot.model.*;
 import com.example.liquidbits_springboot.repository.ContainerRepository;
-import com.example.liquidbits_springboot.restcontroller.ContactRestController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import jakarta.persistence.EntityManager;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.provider.HibernateUtils;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,12 +51,11 @@ public class TestDataService {
                 LocalDate date = LocalDate.ofYearDay(currentDate.getYear(), day);
                 LocalDateTime startTime = date.atTime(8,0);
 
-
                 // Erstelle ein LocalDateTime-Objekt für den aktuellen Tag um 19:00 Uhr
                 LocalDateTime endTime = date.atTime(19,0);
 
-                // Generiere 150 Datensätze für den aktuellen Tag
-                for (int i = 0; i < 25; i++) {
+                // Generiere x Datensätze für den aktuellen Tag
+                for (int i = 0; i < 50; i++) {
                     // Generiere eine zufällige Zeit zwischen 08:00 und 19:00 Uhr
                     Timestamp randomTimeStamp = Timestamp.valueOf(generateRandomTime(startTime, endTime));
 

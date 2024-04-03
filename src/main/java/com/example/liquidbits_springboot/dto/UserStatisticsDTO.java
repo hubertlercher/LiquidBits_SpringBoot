@@ -1,7 +1,6 @@
 package com.example.liquidbits_springboot.dto;
 
 public class UserStatisticsDTO {
-
     //region Properties
     private int userId;
     private String surname;

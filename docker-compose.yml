@@ -15,6 +15,7 @@ services:
       MYSQL_DATABASE: liquidbits
       MYSQL_USER: liquidbits
       MYSQL_PASSWORD: liquidbits
+      TZ: 'Europe/Berlin'
     ports:
       - 3306:3306
 

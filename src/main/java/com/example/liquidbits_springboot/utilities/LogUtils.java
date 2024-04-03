@@ -1,4 +1,4 @@
-package com.example.liquidbits_springboot.api;
+package com.example.liquidbits_springboot.utilities;
 
 public class LogUtils
 {
@@ -13,7 +13,6 @@ public class LogUtils
             result = String.format("liquidBits -> %s -> %s -> %s", className, methodName, parameters);
         return result;
     }
-
     public static String info(String className,
                               String methodName)
     {

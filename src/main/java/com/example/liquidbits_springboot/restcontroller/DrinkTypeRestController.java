@@ -1,9 +1,7 @@
 package com.example.liquidbits_springboot.restcontroller;
 
-import com.example.liquidbits_springboot.api.LogUtils;
-import com.example.liquidbits_springboot.model.Drink;
+import com.example.liquidbits_springboot.utilities.LogUtils;
 import com.example.liquidbits_springboot.model.DrinkType;
-import com.example.liquidbits_springboot.repository.DrinkRepository;
 import com.example.liquidbits_springboot.repository.DrinkTypeRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

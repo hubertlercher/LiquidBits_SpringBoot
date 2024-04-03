@@ -16,5 +16,4 @@ public interface ContainerRepository extends JpaRepository<Container, Integer> {
 
     Optional<Container> findContainerByDrinkType_DrinkTypeIdAndUntappedIsNullAndTappedIsNotNull(int DrinkTypeId);
 
-
 }
