@@ -27,6 +27,7 @@ public class Drink implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "DRINK_ID")
+    @NotNull
     private int drinkId;
     @Column(name = "AMOUNT")
     private double amount;

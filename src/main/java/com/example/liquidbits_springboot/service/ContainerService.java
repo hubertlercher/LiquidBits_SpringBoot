@@ -30,7 +30,6 @@ public class ContainerService {
                 newContainer.setStatus("OK");
                 container.setUntapped(LocalDateTime.now());
 
-
                 // Speichere den neuen Container in der Datenbank
                 containerRepository.save(newContainer);
                 containerRepository.save(container);

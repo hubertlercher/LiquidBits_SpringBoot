@@ -3,7 +3,8 @@ package com.example.liquidbits_springboot.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
+import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,13 +18,17 @@ import java.util.Set;
 public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @NotNull
     @Column(name = "USER_ID")
     private int userId;
 
+    @NotNull
     @Column(name = "SURNAME")
     private String surname;
 
+
     @Column(name = "FIRSTNAME")
+    @NotNull
     private String firstname;
 
     @Column(name = "MAIL")
@@ -38,10 +43,10 @@ public class User implements Serializable {
 
     @Column(name = "IMAGE")
     private String image;
-
+    @NotNull
     @Column(name = "AGE")
     private int age;
-
+    @NotNull
     @Column(name = "SEX")
     private char sex;
 

@@ -1,5 +1,6 @@
 package com.example.liquidbits_springboot.restcontroller;
 
+import com.example.liquidbits_springboot.model.User;
 import com.example.liquidbits_springboot.utilities.LogUtils;
 import com.example.liquidbits_springboot.model.Contact;
 import com.example.liquidbits_springboot.repository.ContactRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -72,5 +74,40 @@ public class ContactRestController {
         return result;
     }
 
+    @DeleteMapping(value = "{contactId}")
+    public ResponseEntity<?> deleteByIdPV1(@PathVariable Integer contactId) {
 
+        logger.info(LogUtils.info(className, "deleteByIdPV1", String.format("(%s)", contactId)));
+
+        boolean error = false;
+        String errorMessage = "";
+        Contact contact = null;
+        ResponseEntity<?> result;
+
+        Optional<Contact> optContact = contactRepository.findById(contactId);
+        if (!error) {
+            if (optContact.isPresent()) {
+                contact = optContact.get();
+            } else {
+                error = true;
+                errorMessage = String.format("Kontakt mit der ID %d nicht gefunden", contactId);
+            }
+        }
+
+        if (!error) {
+            try {
+                contactRepository.deleteById(contactId);
+            } catch (Exception e) {
+                error = true;
+                errorMessage = e.toString();
+            }
+        }
+
+        if (!error) {
+            result = new ResponseEntity<Contact>(contact, HttpStatus.OK);
+        } else {
+            result = new ResponseEntity<>(errorMessage, HttpStatus.OK);
+        }
+        return result;
+    }
 }

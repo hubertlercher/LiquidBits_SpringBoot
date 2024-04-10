@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -24,28 +25,34 @@ public class MaintenanceLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LOG_ID")
+    @NotNull
     private int logId;
 
+    @NotNull
     @Column(name = "DESCRIPTION")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DRINKTYPE_ID")
+    @NotNull
     @JsonIgnoreProperties({"name", "alcvalue", "intensity", "drinkSizeS", "drinkSizeL", "lastMaintenance", "lastCleaning"})
     private DrinkType drinkType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DEVICE_ID")
     @JsonIgnoreProperties({"location", "manufacturer", "modell"})
+    @NotNull
     private Device device;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CONTACT_ID")
     @JsonIgnoreProperties({"contactId", "mail", "telephone"})
+    @NotNull
     private Contact contact;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     @Column(name = "TIMESTAMP")
+    @NotNull
     private LocalDateTime timestamp;
 
 

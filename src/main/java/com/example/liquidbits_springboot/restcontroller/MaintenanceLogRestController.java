@@ -28,7 +28,6 @@ public class MaintenanceLogRestController {
 
     @Autowired
     MaintenanceLogRepository maintenanceLogRepository;
-
     @Autowired
     DrinkTypeRepository drinkTypeRepository;
 
@@ -63,9 +62,6 @@ public class MaintenanceLogRestController {
         } else {
             result = new ResponseEntity<>(String.format("DrinkType mit der ID %d nicht verfügbar", drinkTypeId), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
-
 
         return result;
     }
@@ -102,10 +98,7 @@ public class MaintenanceLogRestController {
             result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-
         return result;
     }
-
-
 
 }

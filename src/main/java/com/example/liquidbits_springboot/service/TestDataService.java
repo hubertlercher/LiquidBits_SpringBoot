@@ -1,5 +1,6 @@
 package com.example.liquidbits_springboot.service;
 
+import com.example.liquidbits_springboot.repository.DrinkRepository;
 import com.example.liquidbits_springboot.utilities.LogUtils;
 import com.example.liquidbits_springboot.model.*;
 import com.example.liquidbits_springboot.repository.ContainerRepository;
@@ -19,84 +20,38 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class TestDataService {
-
     private static final Logger logger = LogManager.getLogger(TestDataService.class);
-
     @Autowired
     ContainerRepository containerRepository;
-
     @Autowired
-    private EntityManager entityManager; // Spring Data JPA EntityManager
-
+    DrinkRepository drinkRepository;
     @Autowired
     ContainerService containerService;
 
     @Transactional
     public void testDataService() {
-
-        entityManager.createQuery("DELETE FROM Drink ").executeUpdate();
-
-        Session session = entityManager.unwrap(Session.class);
+        //Löschen des gesamten Drink-Tables
+        drinkRepository.deleteAll();
 
         // Heutiges Datum
         LocalDate currentDate = LocalDate.now();
-
         // Durchlaufe jeden Tag des aktuellen Jahres
         for (int day = 1; day <= currentDate.getDayOfYear(); day++) {
             // Überprüfe, ob das Datum gültig ist (ignoriere den 30. Februar)
             if (isValidDate(currentDate.getYear(), currentDate.getMonthValue(), day)) {
                 // Erstelle ein LocalDateTime-Objekt für den aktuellen Tag um 08:00 Uhr
-                //LocalDateTime startTime = LocalDateTime.of(currentDate.getYear(), currentDate.getMonth(), day, 8, 0);
-
                 LocalDate date = LocalDate.ofYearDay(currentDate.getYear(), day);
                 LocalDateTime startTime = date.atTime(8,0);
-
                 // Erstelle ein LocalDateTime-Objekt für den aktuellen Tag um 19:00 Uhr
                 LocalDateTime endTime = date.atTime(19,0);
 
                 // Generiere x Datensätze für den aktuellen Tag
-                for (int i = 0; i < 50; i++) {
+                for (int i = 0; i < 25; i++) {
                     // Generiere eine zufällige Zeit zwischen 08:00 und 19:00 Uhr
                     Timestamp randomTimeStamp = Timestamp.valueOf(generateRandomTime(startTime, endTime));
 
                     // Generiere zufällige drinkType_id (1, 2 oder 3)
                     int drinkType = ThreadLocalRandom.current().nextInt(1, 4);
-
-
-
-                    List<Container> allTappedContainers = containerRepository.findContainersByTappedIsNotNullAndAndUntappedIsNull();
-                    for (Container container : allTappedContainers) {
-                        if (Container.calcBarrelLevel(container) <= 0) {
-                            // Erstelle neuen Container mit passender drinktype_id
-                            Container newContainer = new Container();
-                            newContainer.setTapped(LocalDateTime.now());
-                            newContainer.setSizeMl(container.getSizeMl());
-                            newContainer.setDrinkType(container.getDrinkType());
-                            newContainer.setStatus("OK");
-                            container.setUntapped(LocalDateTime.now());
-
-
-                            // Speichere den neuen Container in der Datenbank
-                            containerRepository.save(newContainer);
-                            containerRepository.save(container);
-
-
-                            logger.info(LogUtils.info(TestDataService.class.getSimpleName(), "testDataGenerator",
-                                    String.format("Füllstand: %f, Container: %d ", Container.calcBarrelLevel(container), container.getContainerId())));
-
-                            System.out.printf("Füllstand: %f, Container: %d ", Container.calcBarrelLevel(container), container.getContainerId());
-
-
-                        }
-
-                        logger.info(LogUtils.info(TestDataService.class.getSimpleName(), "testDataGeneratorAusserhalbIf",
-                                String.format("Füllstand: %f, Container: %d ", Container.calcBarrelLevel(container), container.getContainerId())));
-
-                    }
-
-
-
-
                     int containerId;
                     if (drinkType == 1) {
                         containerId = containerRepository.findContainerByDrinkType_DrinkTypeIdAndUntappedIsNullAndTappedIsNotNull(1).get().getContainerId();
@@ -106,19 +61,6 @@ public class TestDataService {
                     } else {
                         containerId = containerRepository.findContainerByDrinkType_DrinkTypeIdAndUntappedIsNullAndTappedIsNotNull(3).get().getContainerId();
                     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     // Generiere amount basierend auf drinkType_id
                     int amount;
@@ -130,6 +72,7 @@ public class TestDataService {
                         amount = ThreadLocalRandom.current().nextInt(2) == 0 ? 250 : 500;
                     }
 
+                    //Setzen der DrinkType
                     DrinkType drinkTypeEntity = new DrinkType();
                     drinkTypeEntity.setDrinkTypeId(drinkType);
 
@@ -142,30 +85,8 @@ public class TestDataService {
                     User user = new User();
                     user.setUserId(ThreadLocalRandom.current().nextInt(1,4));
 
-
-
-
-
                     Drink drink = new Drink(amount, drinkTypeEntity, containerEntity, device, user, randomTimeStamp);
-
-                    session.save(drink);
-
-
-
-                    /*
-                    // Erstelle den INSERT-Befehl mit den zufälligen Werten
-                    String insertStatement = String.format("INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP) " +
-                                    "VALUES (%d, %d, %d, 1, %d, '%s');",
-                            amount, // amount
-                            drinkType, // drinktype_id
-                            containerId, // container_id
-                            ThreadLocalRandom.current().nextInt(1, 4), // user_id
-                            randomTime); // TIMESTAMP
-
-                    // Ausgabe des INSERT-Befehls
-                    System.out.println(insertStatement);
-
-                     */
+                    drinkRepository.save(drink);
                 }
             }
         }

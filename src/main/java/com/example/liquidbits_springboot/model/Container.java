@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -21,13 +22,14 @@ public class Container implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CONTAINER_ID")
+    @NotNull
     private int containerId;
 
-
+    @NotNull
     @Column(name = "TAPPED")
     private LocalDateTime tapped;
 
-
+    @NotNull
     @Column(name = "SIZE_ML")
     private int sizeMl;
 
@@ -35,6 +37,7 @@ public class Container implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DRINKTYPE_ID")
     @JsonIgnoreProperties({"name", "alcvalue", "intensity", "drinkSizeS", "drinkSizeL", "lastMaintenance", "lastCleaning"})
+    @NotNull
     private DrinkType drinkType;
 
     @JsonIgnore
@@ -48,7 +51,7 @@ public class Container implements Serializable {
     @Column(name = "UNTAPPED")
     private LocalDateTime untapped;
 
-
+    @NotNull
     @Column(name = "STATUS")
     private String status;
     //endregion

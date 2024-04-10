@@ -154,7 +154,7 @@ public class StatisticsRestController {
             Map<Integer, Double> amountsByMonth = drinkType.getDrinks().stream()
                     .filter(d -> d.getTimestamp().toLocalDateTime().getYear() == LocalDate.now().getYear())
                     .collect(Collectors.groupingBy(
-                            d -> d.getTimestamp().getMonth(),
+                            d -> d.getTimestamp().toLocalDateTime().getMonth().getValue(),
                             Collectors.summingDouble(Drink::getAmount)
                     ));
 
@@ -165,7 +165,7 @@ public class StatisticsRestController {
             // Erzeugen einer Liste mit Werten, auch für fehlende Stunden mit dem Wert 0
             List<Double> amountsForYear = new ArrayList<>();
             for (int i = 0; i < 12; i++) {
-                amountsForYear.add(amountsByMonth.getOrDefault(i, Double.valueOf(0)));
+                amountsForYear.add(amountsByMonth.getOrDefault(i+1, Double.valueOf(0)));
             }
 
             //Werte fürs Frontend in Liter umrechnen
@@ -218,7 +218,7 @@ public class StatisticsRestController {
         }
         return stats;
     }
-
+/*
     @GetMapping(value = "/drinkStatisticsBarrel/{drinkTypeId}")
     public ContainerStatisticsDTO getDrinkStatisticsBarrel(@PathVariable Integer drinkTypeId) {
         logger.info(LogUtils.info(className, "getDrinkStatisticsBarrel"));
@@ -241,7 +241,7 @@ public class StatisticsRestController {
 
         return csDTO;
     }
-
+*/
 
     @PutMapping(value = "/drinkStatisticsBarrel/{drinkTypeName}")
     public void updateDrinkSizesIntensity(@PathVariable String drinkTypeName,
@@ -256,102 +256,4 @@ public class StatisticsRestController {
         drinkTypeRepository.updateIntensityByName(drinkTypeName, intensity);
 
     }
-
-
-    @PutMapping(value = "")
-    public ResponseEntity update(@Valid @RequestBody
-                                 StatisticsDTO statisticsDTO, BindingResult bindingResult) {
-
-        logger.info(LogUtils.info(className, "update", String.format("(%s)", statisticsDTO)));
-
-        boolean error = false;
-        String errorMessage = "";
-
-        if (!error) {
-            error = bindingResult.hasErrors();
-            errorMessage = bindingResult.toString();
-        }
-
-        if (!error) {
-            try {
-
-                int[] drinkSizesS = statisticsDTO.getDrinkStatisticsBarrel()
-                        .stream()
-                        .flatMapToInt(containerStatisticsDTO -> IntStream.of(containerStatisticsDTO.getDrinkSizeS()))
-                        .toArray();
-
-                for (int i = 0; i < drinkSizesS.length; i++) {
-                    drinkTypeRepository.updateDrinkSizeSById(i + 1, drinkSizesS[i]);
-                }
-
-
-                int[] drinkSizesL = statisticsDTO.getDrinkStatisticsBarrel()
-                        .stream()
-                        .flatMapToInt(containerStatisticsDTO -> IntStream.of(containerStatisticsDTO.getDrinkSizeL()))
-                        .toArray();
-
-                for (int i = 0; i < drinkSizesL.length; i++) {
-                    drinkTypeRepository.updateDrinkSizeLById(i + 1, drinkSizesL[i]);
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                error = true;
-                errorMessage = ErrorsUtils.getErrorMessage(e);
-            }
-        }
-
-        ResponseEntity<?> result;
-        if (!error) {
-            result = new ResponseEntity<StatisticsDTO>(statisticsDTO, HttpStatus.OK);
-        } else {
-            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return result;
-
-    }
-
-
-
-    /*@PutMapping(value = "/drinkStatisticsBarrel/{drinkTypeId}/{drinkSizeS}/{drinkSizeL}")
-    public ResponseEntity updateDrinkStatisticsBarrel(@Valid @RequestBody @PathVariable Integer drinkTypeId, @PathVariable Integer drinkSizeS,
-                                @PathVariable Integer drinkSizeL, BindingResult bindingResult) {
-
-        logger.info(LogUtils.info(className, "updateDrinkStatisticsBarrel", String.format("(S: %d. L: %d)", drinkSizeS, drinkSizeL )));
-
-        boolean error = false;
-        String errorMessage = "";
-
-        if (!error) {
-            error = bindingResult.hasErrors();
-            errorMessage = bindingResult.toString();
-        }
-
-        if (!error) {
-            try {
-
-                drinkTypeRepository.updateDrinkSizeSById(drinkTypeId, drinkSizeS);
-                drinkTypeRepository.updateDrinkSizeLById(drinkTypeId, drinkSizeL);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                error = true;
-                errorMessage = ErrorsUtils.getErrorMessage(e);
-            }
-        }
-
-        ResponseEntity<?> result;
-        if (!error) {
-            result = new ResponseEntity<ContainerStatisticsDTO>(HttpStatus.OK);
-        } else {
-            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return result;
-
-    }*/
-
-
 }

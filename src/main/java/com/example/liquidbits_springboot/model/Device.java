@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,14 +18,18 @@ public class Device implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "DEVICE_ID")
+    @NotNull
     private int deviceId;
 
+    @NotNull
     @Column(name = "LOCATION")
     private String location;
 
+    @NotNull
     @Column(name = "MANUFACTURER")
     private String manufacturer;
 
+    @NotNull
     @Column(name = "MODELL")
     private String modell;
     @JsonIgnore

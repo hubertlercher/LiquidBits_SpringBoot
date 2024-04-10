@@ -8,13 +8,12 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private TestDataService testDataService;
-
     @Autowired
     private ContainerService containerService;
 
     @Override
     public void run(String... args) throws Exception {
-        //testDataService.testDataService(); // Aufruf der Methode testDataService
-        //containerService.containerRefill();
+        testDataService.testDataService();
+        containerService.containerRefill();
     }
 }

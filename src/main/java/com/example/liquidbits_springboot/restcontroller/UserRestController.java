@@ -46,7 +46,7 @@ public class UserRestController {
 
     @GetMapping(value = "")
     public ResponseEntity<?> getAll() {
-        logger.info(LogUtils.info(className, "getDrinkTypes"));
+        logger.info(LogUtils.info(className, "getUser"));
 
         ResponseEntity<?> result;
         List<User> users = userRepository.findAll();

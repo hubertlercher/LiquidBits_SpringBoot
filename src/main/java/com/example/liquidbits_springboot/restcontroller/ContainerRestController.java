@@ -26,22 +26,7 @@ public class ContainerRestController {
     @Autowired
     ContainerRepository containerRepository;
 
-    // http://localhost:8082/containers
-    @GetMapping(value = "{containerId}")
-    public ResponseEntity<?> getByIdPV(@PathVariable Integer containerId) {
-        logger.info(LogUtils.info(className, "getByIdPV", String.format("(%d)", containerId)));
-
-        ResponseEntity<?> result;
-        Optional<Container> optContainer = containerRepository.findById(containerId);
-        if (optContainer.isPresent()) {
-            Container container = optContainer.get();
-            result = new ResponseEntity<Container>(container, HttpStatus.OK);
-        } else {
-            result = new ResponseEntity<>(String.format("Container mit der Id = %d nicht vorhanden", containerId),
-                    HttpStatus.NO_CONTENT);
-        }
-        return result;
-    }
+    // http://localhost:8081/containers
 
     @GetMapping(value = "")
     public ResponseEntity<?> getTappedContainers() {

@@ -255,12 +255,12 @@ INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMEST
 VALUES (250, 2,2,1,3, '2023-12-19 22:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES(300,1,1,1,3, '2023-12-19 22:15:00');
+VALUES(2200,3,12,1,3, '2024-04-03 22:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES(300,3,3,1,1, '2023-12-19 22:15:00');
+VALUES(10500,1,13,1,1, '2024-04-03 20:15:00');
 
 INSERT INTO DRINK(amount, drinktype_id, container_id, device_id, user_id, TIMESTAMP)
-VALUES(500,1,1,1,1, '2023-12-19 22:15:00');
+VALUES(250,2,14,1,1, '2024-04-03 20:15:00');
 
 

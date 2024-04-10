@@ -26,29 +26,6 @@ public class DrinkRestController {
     @Autowired
     DrinkRepository drinkRepository;
 
-    // http://localhost:8082/
-    @GetMapping(value = "{drinkId}")
-    public ResponseEntity<?> getByIdPV(@PathVariable Integer drinkId){
-        logger.info(LogUtils.info(className, "getByIdPV", String.format("(%d)",drinkId)));
-
-        ResponseEntity<?> result;
-        Optional<Drink> optDrink = drinkRepository.findById(drinkId);
-        if (optDrink.isPresent()){
-            Drink drink = optDrink.get();
-
-            result = new ResponseEntity<Drink>(drink, HttpStatus.OK);
-        }
-        else {
-            result = new ResponseEntity<>(String.format("Getränkeausschank mit der Id = %d nicht vorhanden", drinkId),
-                    HttpStatus.NO_CONTENT);
-            logger.info(LogUtils.info(className, "getByIdPV",
-                    String.format("Getränkeausschank mit der Id = %d nicht vorhanden", drinkId)));
-        }
-
-        return result;
-    }
-
-
     @PutMapping(value = "")
     public ResponseEntity<?> add(@Valid @RequestBody Drink drink, BindingResult bindingResult) {
         logger.info(LogUtils.info(className, "add", String.format("(%s)",drink)));
@@ -80,8 +57,5 @@ public class DrinkRestController {
         }
         return result;
     }
-
-
-
 
 }

@@ -57,38 +57,4 @@ public class DrinkTypeRestController {
     }
 
 
-    @PutMapping(value = "")
-    public ResponseEntity<?> update(@Valid @RequestBody DrinkType drinktype, BindingResult bindingResult) {
-        logger.info(LogUtils.info(className, "update", String.format("(%s)", drinktype)));
-
-        boolean error = false;
-        String errorMessage = "";
-
-        if (!error) {
-            error = bindingResult.hasErrors();
-            errorMessage = bindingResult.toString();
-        }
-
-        if (!error) {
-            try {
-                drinkTypeRepository.save(drinktype);
-            } catch (Exception e) {
-                e.printStackTrace();
-                error = true;
-                errorMessage = e.toString();
-            }
-        }
-
-        ResponseEntity<?> result;
-        if (!error) {
-            result = new ResponseEntity<DrinkType>(drinktype, HttpStatus.OK);
-        } else {
-            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-
-        return result;
-    }
-
-
 }

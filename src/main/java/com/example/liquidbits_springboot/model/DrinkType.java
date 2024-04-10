@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -21,9 +22,11 @@ public class DrinkType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "DRINKTYPE_ID")
+    @NotNull
     private int drinkTypeId;
 
     @Column(name = "NAME")
+    @NotNull
     private String name;
 
     @Column(name = "ALCVALUE")
@@ -53,11 +56,11 @@ public class DrinkType implements Serializable {
             fetch = FetchType.LAZY)
     private Collection<MaintenanceLog> logs;
 
-
+    @NotNull
     @Column(name = "DRINKSIZE_S")
     private int drinkSizeS;
 
-
+    @NotNull
     @Column(name = "DRINKSIZE_L")
     private int drinkSizeL;
 

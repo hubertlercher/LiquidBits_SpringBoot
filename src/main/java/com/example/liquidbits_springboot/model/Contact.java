@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
@@ -16,12 +17,14 @@ public class Contact implements Serializable {
     //region Properties
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @NotNull
     @Column(name = "CONTACT_ID")
     private int contactId;
 
+    @NotNull
     @Column(name = "NAME")
     private String name;
-
+    @NotNull
     @Column(name = "MAIL")
     private String mail;
 
