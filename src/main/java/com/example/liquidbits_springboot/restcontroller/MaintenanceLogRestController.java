@@ -69,7 +69,7 @@ public class MaintenanceLogRestController {
 
 
     @PutMapping(value = "")
-    public ResponseEntity<?> add(@Valid @RequestBody MaintenanceLog log, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@Valid @RequestBody MaintenanceLog log, BindingResult bindingResult) {
         logger.info(LogUtils.info(className, "add", String.format("(%s)",log)));
 
         boolean error = false;
@@ -101,4 +101,36 @@ public class MaintenanceLogRestController {
         return result;
     }
 
+    @PostMapping(value = "")
+    public ResponseEntity<?> add(@Valid @RequestBody MaintenanceLog log, BindingResult bindingResult) {
+        logger.info(LogUtils.info(className, "add", String.format("(%s)",log)));
+
+        boolean error = false;
+        String errorMessage = "";
+
+        if(!error) {
+            error = bindingResult.hasErrors();
+            errorMessage = bindingResult.toString();
+        }
+
+        if(!error) {
+            try {
+                maintenanceLogRepository.save(log);
+            } catch (Exception e) {
+                e.printStackTrace();
+                error = true;
+                errorMessage = e.toString();
+            }
+        }
+
+        ResponseEntity<?> result;
+        if(!error) {
+            result = new ResponseEntity<MaintenanceLog>(log, HttpStatus.OK);
+        }
+        else {
+            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return result;
+    }
 }

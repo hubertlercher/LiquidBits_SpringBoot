@@ -27,6 +27,38 @@ public class DrinkRestController {
     DrinkRepository drinkRepository;
 
     @PutMapping(value = "")
+    public ResponseEntity<?> update(@Valid @RequestBody Drink drink, BindingResult bindingResult) {
+        logger.info(LogUtils.info(className, "update", String.format("(%s)",drink)));
+
+        boolean error = false;
+        String errorMessage = "";
+
+        if(!error) {
+            error = bindingResult.hasErrors();
+            errorMessage = bindingResult.toString();
+        }
+
+        if(!error) {
+            try {
+                drinkRepository.save(drink);
+            } catch (Exception e) {
+                e.printStackTrace();
+                error = true;
+                errorMessage = e.toString();
+            }
+        }
+
+        ResponseEntity<?> result;
+        if(!error) {
+            result = new ResponseEntity<Drink>(drink, HttpStatus.OK);
+        }
+        else {
+            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return result;
+    }
+
+    @PostMapping(value = "")
     public ResponseEntity<?> add(@Valid @RequestBody Drink drink, BindingResult bindingResult) {
         logger.info(LogUtils.info(className, "add", String.format("(%s)",drink)));
 

@@ -96,5 +96,37 @@ public class ContainerRestController {
         return result;
     }
 
+    @PostMapping(value = "")
+    public ResponseEntity<?> add(@Valid @RequestBody Container container, BindingResult bindingResult) {
+        logger.info(LogUtils.info(className, "add", String.format("(%s)", container)));
+
+        boolean error = false;
+        String errorMessage = "";
+
+        if (!error) {
+            error = bindingResult.hasErrors();
+            errorMessage = bindingResult.toString();
+        }
+
+        if (!error) {
+            try {
+                containerRepository.save(container);
+            } catch (Exception e) {
+                e.printStackTrace();
+                error = true;
+                errorMessage = e.toString();
+            }
+        }
+
+        ResponseEntity<?> result;
+        if (!error) {
+            result = new ResponseEntity<Container>(container, HttpStatus.OK);
+        } else {
+            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+        return result;
+    }
 
 }

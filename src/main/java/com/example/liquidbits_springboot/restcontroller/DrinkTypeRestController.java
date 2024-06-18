@@ -1,5 +1,6 @@
 package com.example.liquidbits_springboot.restcontroller;
 
+import com.example.liquidbits_springboot.model.MaintenanceLog;
 import com.example.liquidbits_springboot.utilities.LogUtils;
 import com.example.liquidbits_springboot.model.DrinkType;
 import com.example.liquidbits_springboot.repository.DrinkTypeRepository;
@@ -53,6 +54,39 @@ public class DrinkTypeRestController {
             result = new ResponseEntity<>(String.format("DrinkType mit der Id = %d nicht vorhanden", drinkTypeId),
                     HttpStatus.NO_CONTENT);
         }
+        return result;
+    }
+
+    @PostMapping(value = "")
+    public ResponseEntity<?> add(@Valid @RequestBody DrinkType drinkType, BindingResult bindingResult) {
+        logger.info(LogUtils.info(className, "add", String.format("(%s)",drinkType)));
+
+        boolean error = false;
+        String errorMessage = "";
+
+        if(!error) {
+            error = bindingResult.hasErrors();
+            errorMessage = bindingResult.toString();
+        }
+
+        if(!error) {
+            try {
+                drinkTypeRepository.save(drinkType);
+            } catch (Exception e) {
+                e.printStackTrace();
+                error = true;
+                errorMessage = e.toString();
+            }
+        }
+
+        ResponseEntity<?> result;
+        if(!error) {
+            result = new ResponseEntity<DrinkType>(drinkType, HttpStatus.OK);
+        }
+        else {
+            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         return result;
     }
 

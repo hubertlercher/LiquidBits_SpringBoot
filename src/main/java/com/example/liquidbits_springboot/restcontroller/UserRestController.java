@@ -90,6 +90,41 @@ public class UserRestController {
         return result;
     }
 
+    @PostMapping(value = "")
+    public ResponseEntity<?> add(@Valid @RequestBody User user, BindingResult bindingResult) {
+        logger.info(LogUtils.info(className, "update", String.format("(%s)", user)));
+
+        boolean error = false;
+        String errorMessage = "";
+
+        if (!error) {
+            error = bindingResult.hasErrors();
+            errorMessage = bindingResult.toString();
+        }
+
+        if (!error) {
+            try {
+                userRepository.save(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+                error = true;
+                errorMessage = e.toString();
+            }
+        }
+
+        ResponseEntity<?> result;
+        if (!error) {
+            result = new ResponseEntity<User>(user, HttpStatus.OK);
+        } else {
+            result = new ResponseEntity<String>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+        return result;
+    }
+
+
+
 
     @DeleteMapping(value = "{userId}")
     public ResponseEntity<?> deleteByIdPV1(@PathVariable Integer userId) {

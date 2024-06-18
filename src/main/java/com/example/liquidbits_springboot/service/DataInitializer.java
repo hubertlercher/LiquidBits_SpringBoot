@@ -13,7 +13,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        testDataService.testDataService();
-        containerService.containerRefill();
+        //testDataService.testDataService();
+        //containerService.containerRefill();
     }
 }

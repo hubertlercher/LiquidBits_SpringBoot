@@ -48,11 +48,10 @@ public class StatisticsRestController {
     public StatisticsDTO getStats() {
         logger.info(LogUtils.info(className, "getStats"));
         StatisticsDTO stats = new StatisticsDTO();
-        List<Container> containersTapped = containerRepository.findContainersByTappedIsNotNullAndAndUntappedIsNull();
         List<DrinkType> drinkTypes = drinkTypeRepository.findAll();
 
+        List<Container> containersTapped = containerRepository.findContainersByTappedIsNotNullAndAndUntappedIsNull();
         for (Container container : containersTapped) {
-
             ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
 
             csDTO.setDrinkTypeId(container.getDrinkType().getDrinkTypeId());
@@ -127,7 +126,7 @@ public class StatisticsRestController {
             // Erzeugen einer Liste mit Werten, auch für fehlende Tage mit dem Wert 0
             List<Double> amountsForMonth = new ArrayList<>();
             for (int i = 0; i < LocalDate.now().getMonth().length(LocalDate.now().isLeapYear()); i++) {
-                amountsForMonth.add(amountsByDay.getOrDefault(i + 1, Double.valueOf(0)));
+                amountsForMonth.add(amountsByDay.getOrDefault(i+1, Double.valueOf(0)));
             }
 
             //Werte fürs Frontend in Liter umrechnen
@@ -256,4 +255,20 @@ public class StatisticsRestController {
         drinkTypeRepository.updateIntensityByName(drinkTypeName, intensity);
 
     }
+
+    @PostMapping()
+    public void add(@PathVariable String drinkTypeName,
+                                          @RequestParam(name = "S") int drinkSizeS,
+                                          @RequestParam(name = "L") int drinkSizeL,
+                                          @RequestParam(name = "intensity", required = false) Integer intensity) {
+        logger.info(LogUtils.info(className, "updateDrinkSizes"));
+        ContainerStatisticsDTO csDTO = new ContainerStatisticsDTO();
+
+        drinkTypeRepository.updateDrinkSizeSByName(drinkTypeName, drinkSizeS);
+        drinkTypeRepository.updateDrinkSizeLByName(drinkTypeName, drinkSizeL);
+        drinkTypeRepository.updateIntensityByName(drinkTypeName, intensity);
+
+    }
+
+
 }
